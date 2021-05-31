@@ -1,0 +1,115 @@
+$black: #000;
+$blue: #01185b;
+$deep: #000223;
+$grey: #111111;
+$mint: #42d6ca;
+$white: #fff;
+
+.container {
+  background-color: $black;
+  border: 2px solid $mint;
+  color: $mint;
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13.3333px;
+  font-weight: 400;
+  left: 30px;
+  position: absolute;
+  user-select: none;
+  &.header {
+    top: 50px;
+  }
+  &.chooser {
+    max-height: 600px;
+    top: 120px;
+    z-index: 9999;
+    &.icons {
+      overflow-y: scroll;
+    }
+    img {
+      cursor: pointer;
+      display: inline-block;
+      margin: auto;
+      object-fit: cover;
+      vertical-align: middle;
+      &.background {
+        width: 200px;
+      }
+      &.icon {
+        display: block;
+        margin-top: 25px;
+      }
+    }
+  }
+  div {
+    margin: 10px;
+  }
+  hr {
+    visibility: hidden;
+  }
+  button {
+    background: none;
+    border: 2px solid $mint;
+    box-sizing: border-box;
+    color: $mint;
+    height: 30px;
+    margin: 10px;
+    position: relative;
+    width: 100px;
+    transition: all 0.5s ease;
+    &:before {
+      content: ' ';
+      border: 2px transparent solid;
+      box-sizing: border-box;
+      height: 50px;
+      left: 50%;
+      position: absolute;
+      top: -45%;
+      transform: translateX(-50%);
+      transition: all 0.7s ease;
+      width: 120px;
+    }
+  }
+  button:focus {
+    outline: none;
+    opacity: 0.2;
+  }
+  button:hover {
+    background-color: transparent;
+    border-radius: 20px;
+    &:before {
+      border-radius: 30px;
+      border: 1px $mint solid;
+    }
+  }
+}
+
+.arrow {
+  border: solid $mint;
+  border-width: 0 10px 10px 0;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px;
+  vertical-align: middle;
+
+  &.down {
+    transform: rotate(45deg);
+  }
+
+  &.left {
+    transform: rotate(135deg);
+  }
+
+  &.right {
+    transform: rotate(-45deg);
+  }
+
+  &.up {
+    transform: rotate(-135deg);
+  }
+}
+
+.thing {
+  -webkit-user-drag: none;
+  position: absolute;
+}
