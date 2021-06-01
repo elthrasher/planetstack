@@ -22,8 +22,8 @@ export const Page = () => {
     >
       <Header />
       <Chooser />
-      {things.map((thing, index) => (
-        <DraggableThing key={index} thing={thing} />
+      {things.map((thing) => (
+        <DraggableThing key={thing.id} thing={thing} />
       ))}
     </div>
   );

@@ -27,6 +27,7 @@ $white: #fff;
       overflow-y: scroll;
     }
     img {
+      -webkit-user-drag: none;
       cursor: pointer;
       display: inline-block;
       margin: auto;

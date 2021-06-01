@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-import { ChooserContext, backgrounds, ChooserMode, icons } from '../providers/ChooserProvider';
+import { backgrounds, ChooserContext, ChooserMode, icons } from '../providers/ChooserProvider';
 import { ThingContext } from '../providers/ThingProvider';
 
 export const Chooser = () => {
@@ -11,7 +12,7 @@ export const Chooser = () => {
 
   const chooseThing = (path: string) => {
     setChooserMode(ChooserMode.NONE);
-    addThing({ img: path, x: 400, y: 400 });
+    addThing({ id: uuidv4(), img: path, x: 400, y: 400 });
   };
 
   const chooseBG = () => {
@@ -34,7 +35,7 @@ export const Chooser = () => {
       return (
         <div className="container chooser icons">
           {icons.map((icon) => (
-            <img className="icon" key={icon.path} onClick={() => chooseThing(icon.path)} src={icon.path} />
+            <img className="icon" key={icon.path} onMouseDown={() => chooseThing(icon.path)} src={icon.path} />
           ))}
         </div>
       );

@@ -28,11 +28,13 @@
   "license": "MIT",
   "devDependencies": {
     "@aws-cdk/assert": "1.106.1",
+    "@types/aws-lambda": "^8.10.76",
     "@types/fs-extra": "^9.0.7",
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.31",
     "@types/react-dom": "^17.0.1",
     "@types/react-test-renderer": "^17.0.1",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
     "aws-cdk": "1.106.1",
@@ -51,13 +53,22 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
+    "@aws-cdk/aws-apigatewayv2": "1.106.1",
+    "@aws-cdk/aws-apigatewayv2-integrations": "1.106.1",
     "@aws-cdk/aws-cloudfront": "1.106.1",
     "@aws-cdk/aws-cloudfront-origins": "1.106.1",
+    "@aws-cdk/aws-dynamodb": "1.106.1",
+    "@aws-cdk/aws-lambda": "1.106.1",
+    "@aws-cdk/aws-lambda-nodejs": "1.106.1",
     "@aws-cdk/aws-s3": "1.106.1",
     "@aws-cdk/aws-s3-deployment": "1.106.1",
     "@aws-cdk/core": "1.106.1",
+    "aws-sdk": "^2.918.0",
+    "dynamodb-toolbox": "^0.3.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-draggable": "^4.4.3"
+    "react-draggable": "^4.4.3",
+    "react-use-websocket": "^2.7.1",
+    "uuid": "^8.3.2"
   }
 }
