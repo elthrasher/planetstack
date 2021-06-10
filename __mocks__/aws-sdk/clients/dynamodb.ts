@@ -1,8 +1,8 @@
-export const awsSdkPromiseResponse = jest.fn().mockReturnValue(Promise.resolve(true));
+import { awsSdkPromiseResponse } from './awsSdkPromiseResponse';
 
 export const deleteFn = jest.fn().mockImplementation(() => ({ promise: awsSdkPromiseResponse }));
 
-const getFn = jest.fn().mockImplementation(() => ({ promise: awsSdkPromiseResponse }));
+export const getFn = jest.fn().mockImplementation(() => ({ promise: awsSdkPromiseResponse }));
 
 const queryFn = jest.fn().mockImplementation(() => ({ promise: awsSdkPromiseResponse }));
 
