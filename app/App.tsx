@@ -4,14 +4,14 @@ import React from 'react';
 
 import { Page } from './components/page';
 import { ChooserProvider } from './providers/ChooserProvider';
-import { ThingProvider } from './providers/ThingProvider';
+import { WSProvider } from './providers/WSProvider';
 
 const App = (): JSX.Element => (
-  <ThingProvider>
-    <ChooserProvider>
+  <ChooserProvider>
+    <WSProvider>
       <Page />
-    </ChooserProvider>
-  </ThingProvider>
+    </WSProvider>
+  </ChooserProvider>
 );
 
 export default App;

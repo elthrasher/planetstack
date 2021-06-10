@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chooser component No render when chooser mode is blank 1`] = `<div />`;
+
+exports[`Chooser component Render instructions 1`] = `
+<div>
+  <div
+    class="container chooser"
+  >
+    <ul>
+      <li>
+        Select a background
+      </li>
+      <li>
+        Click icons to add them
+      </li>
+      <li>
+        Drag icons to your liking
+      </li>
+      <li>
+        Right click to dismiss an icon
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Chooser component Render the background chooser 1`] = `
+<div>
+  <div
+    class="container chooser"
+  >
+    <i
+      class="arrow left"
+      data-testid="arrow-left"
+    />
+    <img
+      class="background"
+      src="assets/Alpine Planet 1280x720/1280x720 Alpine - Dry.png"
+    />
+    <i
+      class="arrow right"
+      data-testid="arrow-right"
+    />
+  </div>
+</div>
+`;
+
+exports[`Chooser component Render the icon chooser 1`] = `
+<div>
+  <div
+    class="container chooser icons"
+  >
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B01.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B02.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B03.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B04.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B05.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B06.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B07.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B08.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B09.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B10.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B11.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B12.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B13.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B14.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B15.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B16.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B17.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B18.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B19.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B20.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B21.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B22.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B23.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B24.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B25.png"
+    />
+    <img
+      class="icon"
+      src="assets/RandomBuildings/B26.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret01.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret02.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret03.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret04.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret05.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret06.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret07.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret08.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret09.png"
+    />
+    <img
+      class="icon"
+      src="assets/DifferentTurrets/Turret10.png"
+    />
+    <img
+      class="icon"
+      src="assets/Bullets/EnemyB01.png"
+    />
+    <img
+      class="icon"
+      src="assets/Bullets/EnemyB02.png"
+    />
+    <img
+      class="icon"
+      src="assets/Bullets/P02.png"
+    />
+    <img
+      class="icon"
+      src="assets/Bullets/P03.png"
+    />
+    <img
+      class="icon"
+      src="assets/Bullets/P04.png"
+    />
+    <img
+      class="icon"
+      src="assets/Bullets/P05.png"
+    />
+    <img
+      class="icon"
+      src="assets/MiniAsteroids/01.png"
+    />
+    <img
+      class="icon"
+      src="assets/MiniAsteroids/02.png"
+    />
+    <img
+      class="icon"
+      src="assets/MiniAsteroids/03.png"
+    />
+  </div>
+</div>
+`;

@@ -1,8 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
-import { User } from '../repository/users';
+import { User } from '../repositories/users';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  await User.delete({ pk: event.requestContext.connectionId });
+  const cid = event.requestContext.connectionId;
+  await User.delete({ cid });
   return { body: 'Disconnected', statusCode: 200 };
 };

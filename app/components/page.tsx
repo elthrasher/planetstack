@@ -1,18 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
-import { ChooserContext, backgrounds } from '../providers/ChooserProvider';
-import { ThingContext } from '../providers/ThingProvider';
+import { backgrounds } from '../../types/data/backgrounds';
+import { WSContext } from '../providers/WSProvider';
 import { Chooser } from './chooser';
+import { DraggableIcon } from './draggable-icon';
 import { Header } from './header';
-import { DraggableThing } from './draggable-thing';
 
-export const Page = () => {
-  const { background } = useContext(ChooserContext);
-  const { things } = useContext(ThingContext);
+export const Page = (): JSX.Element => {
+  const { gs } = useContext(WSContext);
   return (
     <div
       style={{
-        backgroundImage: `url('${backgrounds[background].path}')`,
+        backgroundImage: `url('${backgrounds[gs.bg].path}')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         display: 'block',
@@ -22,8 +21,8 @@ export const Page = () => {
     >
       <Header />
       <Chooser />
-      {things.map((thing) => (
-        <DraggableThing key={thing.id} thing={thing} />
+      {Object.entries(gs.icons).map(([key, icon]) => (
+        <DraggableIcon icon={icon} id={key} key={key} />
       ))}
     </div>
   );

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main page render the page 1`] = `
+<div>
+  <div
+    style="background-repeat: no-repeat; background-size: cover; display: block; height: 100vh; width: 100vw;"
+  >
+    <div
+      class="container header"
+    >
+      <button>
+        background
+      </button>
+      <button>
+        add icon
+      </button>
+      <button>
+        instructions
+      </button>
+    </div>
+    <img
+      class="thing react-draggable"
+      src="assets/RandomBuildings/B01.png"
+      style="transform: translate(400px,400px);"
+    />
+  </div>
+</div>
+`;

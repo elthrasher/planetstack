@@ -1,17 +1,15 @@
 import React, { useContext } from 'react';
-import { ChooserContext, ChooserMode } from '../providers/ChooserProvider';
-import { Button } from './button';
 
-export const Header = () => {
+import { ChooserContext, ChooserMode } from '../providers/ChooserProvider';
+
+export const Header = (): JSX.Element => {
   const { chooserMode, setChooserMode } = useContext(ChooserContext);
-  const toggleBG = () =>
-    chooserMode === ChooserMode.BACKGROUND ? setChooserMode(ChooserMode.NONE) : setChooserMode(ChooserMode.BACKGROUND);
-  const toggleAdd = () =>
-    chooserMode === ChooserMode.ICON ? setChooserMode(ChooserMode.NONE) : setChooserMode(ChooserMode.ICON);
+  const toggleChooser = (mode: ChooserMode) => () => setChooserMode(chooserMode === mode ? ChooserMode.NONE : mode);
   return (
     <div className="container header">
-      <Button onClick={toggleBG} text="background" />
-      <Button onClick={toggleAdd} text="add icon" />
+      <button onClick={toggleChooser(ChooserMode.BACKGROUND)}>background</button>
+      <button onClick={toggleChooser(ChooserMode.ICON)}>add icon</button>
+      <button onClick={toggleChooser(ChooserMode.INSTRUCTIONS)}>instructions</button>
     </div>
   );
 };

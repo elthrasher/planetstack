@@ -1,13 +1,17 @@
+import { WebSocketApi } from '@aws-cdk/aws-apigatewayv2';
 import { Distribution, OriginAccessIdentity, ViewerProtocolPolicy } from '@aws-cdk/aws-cloudfront';
 import { S3Origin } from '@aws-cdk/aws-cloudfront-origins';
 import { BlockPublicAccess, Bucket } from '@aws-cdk/aws-s3';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
+import { PolicyStatement } from '@aws-cdk/aws-sns/node_modules/@aws-cdk/aws-iam';
 import { DockerImage, RemovalPolicy, Stack } from '@aws-cdk/core';
+import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from '@aws-cdk/custom-resources';
 import { execSync, ExecSyncOptions } from 'child_process';
 import { copySync } from 'fs-extra';
 import { join } from 'path';
+import { stageName } from './apigw';
 
-export const getWebsite = (scope: Stack) => {
+export const getWebsite = (scope: Stack, socketApi: WebSocketApi): string => {
   const websiteBucket = new Bucket(scope, 'WebsiteBucket', {
     autoDeleteObjects: true,
     blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
@@ -37,10 +41,14 @@ export const getWebsite = (scope: Stack) => {
           try {
             execSync('esbuild --version', execOptions);
           } catch {
+            /* istanbul ignore next */
             return false;
           }
           execSync('npm run build', execOptions);
-          copySync(join(__dirname, '../web'), outputDir, { ...execOptions, recursive: true });
+          copySync(join(__dirname, '../web'), outputDir, {
+            ...execOptions,
+            recursive: true,
+          });
           return true;
         },
       },
@@ -51,7 +59,29 @@ export const getWebsite = (scope: Stack) => {
     destinationBucket: websiteBucket,
     distribution,
     memoryLimit: 1024,
+    prune: false,
     sources: [bundle],
+  });
+
+  new AwsCustomResource(scope, 'ConfigResource', {
+    onUpdate: {
+      action: 'putObject',
+      parameters: {
+        Body: Stack.of(scope).toJsonString({
+          socketUrl: socketApi.apiEndpoint,
+          stageName,
+        }),
+        Bucket: websiteBucket.bucketName,
+        CacheControl: 'max-age=0, no-cache, no-store, must-revalidate',
+        ContentType: 'application/json',
+        Key: 'config.json',
+      },
+      physicalResourceId: PhysicalResourceId.of('config'),
+      service: 'S3',
+    },
+    policy: AwsCustomResourcePolicy.fromStatements([
+      new PolicyStatement({ actions: ['s3:PutObject'], resources: [websiteBucket.arnForObjects('config.json')] }),
+    ]),
   });
 
   return distribution.distributionDomainName;

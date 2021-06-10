@@ -1,11 +1,14 @@
 import { build, BuildOptions, BuildResult, serve } from 'esbuild';
 import sassPlugin from 'esbuild-plugin-sass';
 import { createServer, request, Server, ServerResponse } from 'http';
+import { stageName } from './cdk/apigw';
 
-let clients: ServerResponse[] = [];
+const clients: ServerResponse[] = [];
 
 const mode = process.argv[2];
 const env = mode === 'build' ? 'production' : 'development';
+
+const socketUrl = 'wss://jdnif5uxok.execute-api.us-east-1.amazonaws.com';
 
 // Thanks https://github.com/evanw/esbuild/issues/802#issuecomment-819578182
 const buildOptions: BuildOptions = {
@@ -28,7 +31,7 @@ export const run = async (mode: string): Promise<BuildResult | Server> => {
     ...buildOptions,
     banner: { js: ' (() => new EventSource("/esbuild").onmessage = () => location.reload())();' },
     watch: {
-      onRebuild(error, _result) {
+      onRebuild(error) {
         clients.forEach((res) => res.write('data: update\n\n'));
         clients.length = 0;
         console.log(error ? error : '...');
@@ -47,10 +50,15 @@ export const run = async (mode: string): Promise<BuildResult | Server> => {
           }),
         );
       }
+      if (req.url === '/config.json') {
+        res.writeHead(200, { 'Cache-Control': 'no-cache', 'Content-Type': 'application/json' });
+        res.write(JSON.stringify({ socketUrl, stageName }));
+        return res.end();
+      }
       const path = url?.includes('.') ? url : '/index.html';
       req.pipe(
         request({ hostname: '0.0.0.0', port: 8000, path, method, headers }, (prxRes) => {
-          res.writeHead(prxRes.statusCode!, prxRes.headers);
+          res.writeHead(prxRes.statusCode || 500, prxRes.headers);
           prxRes.pipe(res, { end: true });
         }),
         { end: true },

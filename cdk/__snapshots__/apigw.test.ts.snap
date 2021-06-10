@@ -1,0 +1,1109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`API Gateway returns a websocket api 1`] = `
+Object {
+  "Parameters": Any<Object>,
+  "Resources": Object {
+    "DevStage520A913F": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "AutoDeploy": true,
+        "StageName": "dev",
+      },
+      "Type": "AWS::ApiGatewayV2::Stage",
+    },
+    "WebSocketApi34BCF99B": Object {
+      "Properties": Object {
+        "Name": "WebSocketApi",
+        "ProtocolType": "WEBSOCKET",
+        "RouteSelectionExpression": "$request.body.action",
+      },
+      "Type": "AWS::ApiGatewayV2::Api",
+    },
+    "WebSocketApiaddIconRouteApiTestStackWebSocketApiaddIconRoute33036E4FPermission1935B16A": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "addIconFunction4EE4E627",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*addIcon",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApiaddIconRouteEBADD1DC": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "addIcon",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApiaddIconRouteWebSocketIntegration180bd9da36ce12bea60613f440a9786a83658B96",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApiaddIconRouteWebSocketIntegration180bd9da36ce12bea60613f440a9786a83658B96": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "addIconFunction4EE4E627",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WebSocketApichangeBackgroundRouteApiTestStackWebSocketApichangeBackgroundRouteC2093E12PermissionC8E0ACAB": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "changeBackgroundFunction2B84D2FD",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*changeBackground",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApichangeBackgroundRouteCB345709": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "changeBackground",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApichangeBackgroundRouteWebSocketIntegration79b850399517228fd2da491d182b834469208C0C",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApichangeBackgroundRouteWebSocketIntegration79b850399517228fd2da491d182b834469208C0C": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "changeBackgroundFunction2B84D2FD",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WebSocketApiconnectRoute846149DD": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "$connect",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApiconnectRouteWebSocketIntegration3705f7641fc6204714f30f040bc39e43946B3081",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApiconnectRouteApiTestStackWebSocketApiconnectRouteE0CA192CPermissionB8CDF26C": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "onConnectFunction279CD46D",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*$connect",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApiconnectRouteWebSocketIntegration3705f7641fc6204714f30f040bc39e43946B3081": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "onConnectFunction279CD46D",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WebSocketApideleteIconRouteApiTestStackWebSocketApideleteIconRoute81090899PermissionB628BC1C": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "deleteIconFunction316C8F7A",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*deleteIcon",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApideleteIconRouteB72589AB": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "deleteIcon",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApideleteIconRouteWebSocketIntegrationd8dad83264b6017b882f3a5e95d217179578DE41",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApideleteIconRouteWebSocketIntegrationd8dad83264b6017b882f3a5e95d217179578DE41": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "deleteIconFunction316C8F7A",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WebSocketApidisconnectRouteApiTestStackWebSocketApidisconnectRoute9CD012F6Permission0106B9B9": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "onDisconnectFunctionD5542DF7",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*$disconnect",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApidisconnectRouteC181A19C": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "$disconnect",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApidisconnectRouteWebSocketIntegration77927d2ca1f8e59d5bc155807533cc7c937FC6EC",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApidisconnectRouteWebSocketIntegration77927d2ca1f8e59d5bc155807533cc7c937FC6EC": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "onDisconnectFunctionD5542DF7",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WebSocketApigetStateRouteApiTestStackWebSocketApigetStateRoute21C1D74CPermission17E0E384": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "getStateFunction1C5566DE",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*getState",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApigetStateRouteBFF18CEB": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "getState",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApigetStateRouteWebSocketIntegration26c35b765d3b655ecf9beb6b2c5dad4c6540EBBD",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApigetStateRouteWebSocketIntegration26c35b765d3b655ecf9beb6b2c5dad4c6540EBBD": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "getStateFunction1C5566DE",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "WebSocketApimoveIconRoute523F71A8": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "RouteKey": "moveIcon",
+        "Target": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "integrations/",
+              Object {
+                "Ref": "WebSocketApimoveIconRouteWebSocketIntegrationcfeb5d44783412f84a2ff43b0cceab07864B5EC5",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Route",
+    },
+    "WebSocketApimoveIconRouteApiTestStackWebSocketApimoveIconRouteE9A23A46PermissionEB7D0A5A": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "moveIconFunctionB9241170",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*moveIcon",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "WebSocketApimoveIconRouteWebSocketIntegrationcfeb5d44783412f84a2ff43b0cceab07864B5EC5": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "moveIconFunctionB9241170",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "addIconFunction4EE4E627": Object {
+      "DependsOn": Array [
+        "addIconFunctionServiceRoleDefaultPolicy1634626F",
+        "addIconFunctionServiceRole8C1DB12B",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "addIconFunctionServiceRole8C1DB12B",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "addIconFunctionServiceRole8C1DB12B": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "addIconFunctionServiceRoleDefaultPolicy1634626F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "execute-api:ManageConnections",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:execute-api:undefined:undefined:",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "addIconFunctionServiceRoleDefaultPolicy1634626F",
+        "Roles": Array [
+          Object {
+            "Ref": "addIconFunctionServiceRole8C1DB12B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "changeBackgroundFunction2B84D2FD": Object {
+      "DependsOn": Array [
+        "changeBackgroundFunctionServiceRoleDefaultPolicy58777BF1",
+        "changeBackgroundFunctionServiceRole679E1E93",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "changeBackgroundFunctionServiceRole679E1E93",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "changeBackgroundFunctionServiceRole679E1E93": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "changeBackgroundFunctionServiceRoleDefaultPolicy58777BF1": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "execute-api:ManageConnections",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:execute-api:undefined:undefined:",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "changeBackgroundFunctionServiceRoleDefaultPolicy58777BF1",
+        "Roles": Array [
+          Object {
+            "Ref": "changeBackgroundFunctionServiceRole679E1E93",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "deleteIconFunction316C8F7A": Object {
+      "DependsOn": Array [
+        "deleteIconFunctionServiceRoleDefaultPolicy22E6821B",
+        "deleteIconFunctionServiceRole01CCD8F3",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "deleteIconFunctionServiceRole01CCD8F3",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "deleteIconFunctionServiceRole01CCD8F3": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "deleteIconFunctionServiceRoleDefaultPolicy22E6821B": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "execute-api:ManageConnections",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:execute-api:undefined:undefined:",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "deleteIconFunctionServiceRoleDefaultPolicy22E6821B",
+        "Roles": Array [
+          Object {
+            "Ref": "deleteIconFunctionServiceRole01CCD8F3",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "getStateFunction1C5566DE": Object {
+      "DependsOn": Array [
+        "getStateFunctionServiceRoleDefaultPolicyEC76E2CF",
+        "getStateFunctionServiceRole7BBA9E9C",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "getStateFunctionServiceRole7BBA9E9C",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "getStateFunctionServiceRole7BBA9E9C": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "getStateFunctionServiceRoleDefaultPolicyEC76E2CF": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "execute-api:ManageConnections",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:execute-api:undefined:undefined:",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "getStateFunctionServiceRoleDefaultPolicyEC76E2CF",
+        "Roles": Array [
+          Object {
+            "Ref": "getStateFunctionServiceRole7BBA9E9C",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "moveIconFunctionB9241170": Object {
+      "DependsOn": Array [
+        "moveIconFunctionServiceRoleDefaultPolicy280FFE37",
+        "moveIconFunctionServiceRole888B0F67",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "moveIconFunctionServiceRole888B0F67",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "moveIconFunctionServiceRole888B0F67": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "moveIconFunctionServiceRoleDefaultPolicy280FFE37": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "execute-api:ManageConnections",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:execute-api:undefined:undefined:",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "moveIconFunctionServiceRoleDefaultPolicy280FFE37",
+        "Roles": Array [
+          Object {
+            "Ref": "moveIconFunctionServiceRole888B0F67",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "onConnectFunction279CD46D": Object {
+      "DependsOn": Array [
+        "onConnectFunctionServiceRole23446B74",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "onConnectFunctionServiceRole23446B74",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "onConnectFunctionServiceRole23446B74": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "onDisconnectFunctionD5542DF7": Object {
+      "DependsOn": Array [
+        "onDisconnectFunctionServiceRoleAE265B92",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "onDisconnectFunctionServiceRoleAE265B92",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "onDisconnectFunctionServiceRoleAE265B92": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;

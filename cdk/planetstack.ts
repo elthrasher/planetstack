@@ -9,11 +9,11 @@ export class PlanetStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const webUrl = getWebsite(this);
-
     const fns = getFunctions(this);
 
     const [apigw, stage] = getApiGateway(this, fns);
+
+    const webUrl = getWebsite(this, apigw);
 
     getTable(this, fns);
 

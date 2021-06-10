@@ -1,23 +1,25 @@
 import React, { useContext, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
-import { backgrounds, ChooserContext, ChooserMode, icons } from '../providers/ChooserProvider';
-import { ThingContext } from '../providers/ThingProvider';
+import { backgrounds } from '../../types/data/backgrounds';
+import { icons } from '../../types/data/icons';
+import { MessageAction } from '../../types/MessageAction';
+import { ChooserContext, ChooserMode } from '../providers/ChooserProvider';
+import { WSContext } from '../providers/WSProvider';
 
-export const Chooser = () => {
-  const { chooserMode, setBackground, setChooserMode } = useContext(ChooserContext);
-  const { addThing } = useContext(ThingContext);
+export const Chooser = (): JSX.Element | null => {
+  const { chooserMode, setChooserMode } = useContext(ChooserContext);
+  const { sendMessage } = useContext(WSContext);
 
   const [bgPreview, setBGPreview] = useState(0);
 
-  const chooseThing = (path: string) => {
+  const chooseIcon = (img: number) => () => {
     setChooserMode(ChooserMode.NONE);
-    addThing({ id: uuidv4(), img: path, x: 400, y: 400 });
+    sendMessage(JSON.stringify({ action: MessageAction.ADD_ICON, icon: { img, x: 400, y: 400 } }));
   };
 
   const chooseBG = () => {
     setChooserMode(ChooserMode.NONE);
-    setBackground(bgPreview);
+    sendMessage(JSON.stringify({ action: MessageAction.CHANGE_BACKGROUND, bg: bgPreview }));
   };
 
   const goBack = () => setBGPreview(Math.max(bgPreview - 1, 0));
@@ -26,19 +28,31 @@ export const Chooser = () => {
     case ChooserMode.BACKGROUND:
       return (
         <div className="container chooser">
-          <i className="arrow left" onClick={goBack}></i>
+          <i className="arrow left" data-testid="arrow-left" onClick={goBack}></i>
           <img className="background" src={backgrounds[bgPreview].path} onClick={chooseBG} />
-          <i className="arrow right" onClick={goFwd}></i>
+          <i className="arrow right" data-testid="arrow-right" onClick={goFwd}></i>
         </div>
       );
     case ChooserMode.ICON:
       return (
         <div className="container chooser icons">
-          {icons.map((icon) => (
-            <img className="icon" key={icon.path} onMouseDown={() => chooseThing(icon.path)} src={icon.path} />
+          {icons.map((icon, index) => (
+            <img className="icon" key={index} onMouseDown={chooseIcon(index)} src={icon.path} />
           ))}
         </div>
       );
+    case ChooserMode.INSTRUCTIONS:
+      return (
+        <div className="container chooser">
+          <ul>
+            <li>Select a background</li>
+            <li>Click icons to add them</li>
+            <li>Drag icons to your liking</li>
+            <li>Right click to dismiss an icon</li>
+          </ul>
+        </div>
+      );
+    default:
+      return null;
   }
-  return null;
 };

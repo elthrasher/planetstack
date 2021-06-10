@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`draggable icon component Move from 400x400 to 499x499 1`] = `
+<div>
+  <img
+    class="thing react-draggable"
+    src="assets/RandomBuildings/B01.png"
+    style="transform: translate(400px,400px);"
+  />
+</div>
+`;
+
+exports[`draggable icon component Move from 400x400 to 499x499 2`] = `
+<div>
+  <img
+    class="thing react-draggable react-draggable-dragged"
+    src="assets/RandomBuildings/B01.png"
+    style="transform: translate(499px,499px);"
+  />
+</div>
+`;
+
+exports[`draggable icon component Remove the component 1`] = `
+<div>
+  <img
+    class="thing react-draggable"
+    src="assets/RandomBuildings/B01.png"
+    style="transform: translate(400px,400px);"
+  />
+</div>
+`;
