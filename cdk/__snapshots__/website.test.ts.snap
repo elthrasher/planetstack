@@ -53,6 +53,48 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "Account": Object {
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "CWRole7EC94C1E",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "CWRole7EC94C1E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "ConfigResource426122EF": Object {
       "DeletionPolicy": "Delete",
       "DependsOn": Array [
@@ -220,7 +262,7 @@ Object {
                       },
                       ":s3:::",
                       Object {
-                        "Ref": "AssetParameters99ec303b4a3b771c6b2263b0a35ac975a5597691972b76ab1c9b9cc04d7ca9b8S3BucketEE1D464A",
+                        "Ref": "AssetParametersea38df81303d8c15cd1704b352daab663bc9eac872fcb421369774b44586e7dbS3Bucket472F03F2",
                       },
                     ],
                   ],
@@ -235,7 +277,7 @@ Object {
                       },
                       ":s3:::",
                       Object {
-                        "Ref": "AssetParameters99ec303b4a3b771c6b2263b0a35ac975a5597691972b76ab1c9b9cc04d7ca9b8S3BucketEE1D464A",
+                        "Ref": "AssetParametersea38df81303d8c15cd1704b352daab663bc9eac872fcb421369774b44586e7dbS3Bucket472F03F2",
                       },
                       "/*",
                     ],
@@ -409,56 +451,32 @@ Object {
             "Arn",
           ],
         },
-        "SourceBucketNames": Array [
-          Object {
-            "Ref": "AssetParameters99ec303b4a3b771c6b2263b0a35ac975a5597691972b76ab1c9b9cc04d7ca9b8S3BucketEE1D464A",
-          },
-        ],
-        "SourceObjectKeys": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters99ec303b4a3b771c6b2263b0a35ac975a5597691972b76ab1c9b9cc04d7ca9b8S3VersionKey1BE1BCE2",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters99ec303b4a3b771c6b2263b0a35ac975a5597691972b76ab1c9b9cc04d7ca9b8S3VersionKey1BE1BCE2",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
-        ],
+        "SourceBucketNames": Any<Array>,
+        "SourceObjectKeys": Any<Object>,
       },
       "Type": "Custom::CDKBucketDeployment",
       "UpdateReplacePolicy": "Delete",
     },
     "DevStage520A913F": Object {
       "Properties": Object {
+        "AccessLogSettings": Object {
+          "DestinationArn": Object {
+            "Fn::GetAtt": Array [
+              "WebSocketAPILogsCEF592AF",
+              "Arn",
+            ],
+          },
+          "Format": "$context.identity.sourceIp - - [$context.requestTime] \\"$context.httpMethod $context.routeKey $context.protocol\\" $context.status $context.responseLength $context.requestId",
+        },
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
         },
         "AutoDeploy": true,
+        "DefaultRouteSettings": Object {
+          "DataTraceEnabled": true,
+          "DetailedMetricsEnabled": true,
+          "LoggingLevel": "INFO",
+        },
         "StageName": "dev",
       },
       "Type": "AWS::ApiGatewayV2::Stage",
@@ -511,6 +529,102 @@ Object {
       },
       "Type": "AWS::CloudFront::Distribution",
     },
+    "MoveInt": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "moveIconFunctionB9241170",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Integration",
+    },
+    "MoveModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "ContentType": "application/json",
+        "Name": "MoveModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "properties": Object {
+            "action": Object {
+              "type": "string",
+            },
+            "id": Object {
+              "type": "string",
+            },
+            "img": Object {
+              "type": "number",
+            },
+            "x": Object {
+              "type": "number",
+            },
+            "y": Object {
+              "type": "number",
+            },
+          },
+          "required": Array [
+            "action",
+            "id",
+            "img",
+            "x",
+            "y",
+          ],
+          "title": "MoveSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "MovePermission": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "moveIconFunctionB9241170",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/*/*moveIcon",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
     "OriginAccessIdentityDF1E3CAC": Object {
       "Properties": Object {
         "CloudFrontOriginAccessIdentityConfig": Object {
@@ -518,6 +632,14 @@ Object {
         },
       },
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "WebSocketAPILogsCEF592AF": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "RetentionInDays": 7,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
     },
     "WebSocketApi34BCF99B": Object {
       "Properties": Object {
@@ -994,6 +1116,10 @@ Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
         },
+        "ModelSelectionExpression": "$request.body.action",
+        "RequestModels": Object {
+          "moveIcon": "MoveModel",
+        },
         "RouteKey": "moveIcon",
         "Target": Object {
           "Fn::Join": Array [
@@ -1001,7 +1127,7 @@ Object {
             Array [
               "integrations/",
               Object {
-                "Ref": "WebSocketApimoveIconRouteWebSocketIntegrationcfeb5d44783412f84a2ff43b0cceab07864B5EC5",
+                "Ref": "MoveInt",
               },
             ],
           ],

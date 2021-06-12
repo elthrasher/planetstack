@@ -1,7 +1,9 @@
-import { WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
+import { CfnAccount } from '@aws-cdk/aws-apigateway';
+import { CfnIntegration, CfnModel, CfnRoute, CfnStage, WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaWebSocketIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
-import { PolicyStatement } from '@aws-cdk/aws-iam';
-import { Stack } from '@aws-cdk/core';
+import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs';
+import { RemovalPolicy, Stack } from '@aws-cdk/core';
 
 import { MessageAction } from '../types/MessageAction';
 import { lambdaFunctions } from './lambda';
@@ -12,7 +14,6 @@ export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi
   const webSocketApi = new WebSocketApi(scope, 'WebSocketApi', {
     connectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onConnect }) },
     disconnectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onDisconnect }) },
-    // defaultRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onMessage }) },
   });
 
   webSocketApi.addRoute(MessageAction.ADD_ICON, {
@@ -31,7 +32,7 @@ export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi
     integration: new LambdaWebSocketIntegration({ handler: fns.getState }),
   });
 
-  webSocketApi.addRoute(MessageAction.MOVE_ICON, {
+  const moveRoute = webSocketApi.addRoute(MessageAction.MOVE_ICON, {
     integration: new LambdaWebSocketIntegration({ handler: fns.moveIcon }),
   });
 
@@ -51,6 +52,76 @@ export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi
       }),
     ),
   );
+
+  const log = new LogGroup(scope, 'WebSocketAPILogs', {
+    removalPolicy: RemovalPolicy.DESTROY,
+    retention: RetentionDays.ONE_WEEK,
+  });
+  const cs = stage.node.defaultChild as CfnStage;
+  cs.accessLogSettings = {
+    destinationArn: log.logGroupArn,
+    format: `$context.identity.sourceIp - - [$context.requestTime] "$context.httpMethod $context.routeKey $context.protocol" $context.status $context.responseLength $context.requestId`,
+  };
+  cs.defaultRouteSettings = {
+    dataTraceEnabled: true,
+    detailedMetricsEnabled: true,
+    loggingLevel: 'INFO',
+  };
+
+  const cwRole = new Role(scope, 'CWRole', {
+    assumedBy: new ServicePrincipal('apigateway.amazonaws.com'),
+    managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonAPIGatewayPushToCloudWatchLogs')],
+  });
+
+  new CfnAccount(scope, 'Account', {
+    cloudWatchRoleArn: cwRole.roleArn,
+  });
+
+  const moveModel = new CfnModel(scope, 'MoveModel', {
+    apiId: webSocketApi.apiId,
+    contentType: 'application/json',
+    name: 'MoveModel',
+    schema: {
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      properties: {
+        action: { type: 'string' },
+        id: { type: 'string' },
+        img: { type: 'number' },
+        x: { type: 'number' },
+        y: { type: 'number' },
+      },
+      required: ['action', 'id', 'img', 'x', 'y'],
+      title: 'MoveSchema',
+      type: 'object',
+    },
+  });
+
+  const moveInt = new CfnIntegration(scope, 'MoveInt', {
+    apiId: webSocketApi.apiId,
+    integrationType: 'AWS_PROXY',
+    integrationUri: Stack.of(scope).formatArn({
+      account: 'lambda',
+      resource: 'path/2015-03-31/functions',
+      resourceName: `${fns.moveIcon.functionArn}/invocations`,
+      service: 'apigateway',
+    }),
+  });
+
+  const rt = moveRoute.node.defaultChild as CfnRoute;
+
+  rt.modelSelectionExpression = '$request.body.action';
+  rt.requestModels = { [MessageAction.MOVE_ICON]: moveModel.name };
+  rt.target = `integrations/${moveInt.ref}`;
+
+  fns.moveIcon.addPermission('MovePermission', {
+    principal: new ServicePrincipal('apigateway.amazonaws.com'),
+    scope,
+    sourceArn: Stack.of(scope).formatArn({
+      service: 'execute-api',
+      resource: webSocketApi.apiId,
+      resourceName: `*/*${MessageAction.MOVE_ICON}`,
+    }),
+  });
 
   return [webSocketApi, stage];
 };

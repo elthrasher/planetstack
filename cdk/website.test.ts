@@ -22,6 +22,14 @@ describe('web components', () => {
             Properties: { Code: expect.any(Object) },
           };
           break;
+        case 'Custom::CDKBucketDeployment':
+          matchObject.Resources[res] = {
+            Properties: {
+              SourceBucketNames: expect.any(Array),
+              SourceObjectKeys: expect.any(Object),
+            },
+          };
+          break;
         default:
           break;
       }

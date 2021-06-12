@@ -7,17 +7,17 @@ import { MessageAction } from '../../types/MessageAction';
 import { WSContext } from '../providers/WSProvider';
 
 export const DraggableIcon = ({ icon, id }: { icon: IconModel; id: string }): JSX.Element => {
-  const { sendMessage } = useContext(WSContext);
+  const { sendJsonMessage } = useContext(WSContext);
   // Track local state for dragging, but update if we get a new message
   const [pos, setPos] = useState({ x: icon.x, y: icon.y });
   useMemo(() => setPos({ x: icon.x, y: icon.y }), [icon]);
   const handleContextMenu = (e: MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
-    sendMessage(JSON.stringify({ action: MessageAction.DELETE_ICON, id }));
+    sendJsonMessage({ action: MessageAction.DELETE_ICON, id });
   };
   const handleStop = (_e: DraggableEvent, d: DraggableData) => {
     setPos({ x: d.x, y: d.y });
-    sendMessage(JSON.stringify({ action: MessageAction.MOVE_ICON, id, img: icon.img, x: d.x, y: d.y }));
+    sendJsonMessage({ action: MessageAction.MOVE_ICON, id, img: icon.img, x: d.x, y: d.y });
   };
   return (
     <Draggable position={pos} onStop={handleStop}>

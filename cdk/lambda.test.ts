@@ -1,5 +1,5 @@
 import { SynthUtils } from '@aws-cdk/assert';
-import { App, Stack } from '@aws-cdk/aws-sns/node_modules/@aws-cdk/core';
+import { App, Stack } from '@aws-cdk/core';
 
 import { getFunctions } from './lambda';
 

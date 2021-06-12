@@ -8,18 +8,18 @@ import { WSContext } from '../providers/WSProvider';
 
 export const Chooser = (): JSX.Element | null => {
   const { chooserMode, setChooserMode } = useContext(ChooserContext);
-  const { sendMessage } = useContext(WSContext);
+  const { sendJsonMessage } = useContext(WSContext);
 
   const [bgPreview, setBGPreview] = useState(0);
 
   const chooseIcon = (img: number) => () => {
     setChooserMode(ChooserMode.NONE);
-    sendMessage(JSON.stringify({ action: MessageAction.ADD_ICON, icon: { img, x: 400, y: 400 } }));
+    sendJsonMessage({ action: MessageAction.ADD_ICON, icon: { img, x: 400, y: 400 } });
   };
 
   const chooseBG = () => {
     setChooserMode(ChooserMode.NONE);
-    sendMessage(JSON.stringify({ action: MessageAction.CHANGE_BACKGROUND, bg: bgPreview }));
+    sendJsonMessage({ action: MessageAction.CHANGE_BACKGROUND, bg: bgPreview });
   };
 
   const goBack = () => setBGPreview(Math.max(bgPreview - 1, 0));

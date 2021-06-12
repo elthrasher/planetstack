@@ -5,7 +5,7 @@ import { MessageAction } from '../../types/MessageAction';
 import { WSContext } from '../providers/WSProvider';
 import { DraggableIcon } from './draggable-icon';
 
-const sendMessage = jest.fn();
+const sendJsonMessage = jest.fn();
 
 // Thanks https://github.com/testing-library/user-event/issues/440
 const fireMouseEvent = function (type: string, elem: EventTarget, centerX: number, centerY: number) {
@@ -39,7 +39,7 @@ describe('draggable icon component', () => {
   });
   test('Remove the component', () => {
     const { container, getByRole } = render(
-      <WSContext.Provider value={{ gs: { bg: 0, icons: {} }, sendMessage }}>
+      <WSContext.Provider value={{ gs: { bg: 0, icons: {} }, sendJsonMessage }}>
         <DraggableIcon icon={{ img: 0, x: 400, y: 400 }} id={'abc-123'} />
       </WSContext.Provider>,
     );
@@ -47,6 +47,6 @@ describe('draggable icon component', () => {
     const img = getByRole('img');
     expect(img).toHaveClass('thing');
     fireEvent.contextMenu(img);
-    expect(sendMessage).toHaveBeenCalledWith(JSON.stringify({ action: MessageAction.DELETE_ICON, id: 'abc-123' }));
+    expect(sendJsonMessage).toHaveBeenCalledWith({ action: MessageAction.DELETE_ICON, id: 'abc-123' });
   });
 });

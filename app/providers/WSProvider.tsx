@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useState } from 'react';
-import useWebSocket, { SendMessage } from 'react-use-websocket';
+import useWebSocket from 'react-use-websocket';
+import { SendJsonMessage } from 'react-use-websocket/dist/lib/types';
 
 import { GameStateModel } from '../../types/gamestate';
 import { MessageAction } from '../../types/MessageAction';
@@ -15,23 +16,23 @@ const defaultGs: GameStateModel = { bg: 0, icons: {} };
 
 export interface WSContextModel {
   gs: GameStateModel;
-  sendMessage: SendMessage;
+  sendJsonMessage: SendJsonMessage;
 }
 
 export const WSContext = createContext<WSContextModel>({
   gs: defaultGs,
-  sendMessage: () => null,
+  sendJsonMessage: () => null,
 });
 
 export const WSProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [gs, setGs] = useState(defaultGs);
   /* istanbul ignore next */
-  const { sendMessage } = useWebSocket(getSocketUrl, {
-    onOpen: () => sendMessage(JSON.stringify({ action: MessageAction.GET_STATE })),
+  const { sendJsonMessage } = useWebSocket(getSocketUrl, {
+    onOpen: () => sendJsonMessage({ action: MessageAction.GET_STATE }),
     onError: (e) => console.error(e),
     onMessage: (message: MessageEvent<string>) => setGs(JSON.parse(message.data)),
     share: true,
     shouldReconnect: () => true,
   });
-  return <WSContext.Provider value={{ gs, sendMessage }}>{children}</WSContext.Provider>;
+  return <WSContext.Provider value={{ gs, sendJsonMessage }}>{children}</WSContext.Provider>;
 };

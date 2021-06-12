@@ -7,7 +7,7 @@ describe('main page', () => {
   test('render the page', () => {
     const { container } = render(
       <WSContext.Provider
-        value={{ gs: { bg: 0, icons: { 'abc-123': { img: 0, x: 400, y: 400 } } }, sendMessage: jest.fn() }}
+        value={{ gs: { bg: 0, icons: { 'abc-123': { img: 0, x: 400, y: 400 } } }, sendJsonMessage: jest.fn() }}
       >
         <Page />
       </WSContext.Provider>,

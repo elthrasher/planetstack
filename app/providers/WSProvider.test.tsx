@@ -3,12 +3,12 @@ import React, { ReactNode, useContext } from 'react';
 
 import { WSContext, WSProvider } from './WSProvider';
 
-const sendMessage = jest.fn();
+const sendJsonMessage = jest.fn();
 
 jest.mock('react-use-websocket', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(() => ({
-    sendMessage,
+    sendJsonMessage,
   })),
 }));
 
@@ -17,8 +17,8 @@ describe('WSProvider', () => {
     const wrapper = ({ children }: { children: ReactNode }) => <WSProvider>{children}</WSProvider>;
     const { result } = renderHook(() => useContext(WSContext), { wrapper });
     act(() => {
-      result.current.sendMessage(JSON.stringify({ message: 'blah' }));
+      result.current.sendJsonMessage({ message: 'blah' });
     });
-    expect(sendMessage).toHaveBeenCalledWith(JSON.stringify({ message: 'blah' }));
+    expect(sendJsonMessage).toHaveBeenCalledWith({ message: 'blah' });
   });
 });
