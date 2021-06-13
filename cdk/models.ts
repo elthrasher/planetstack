@@ -1,5 +1,6 @@
 import { CfnModel, WebSocketApi } from '@aws-cdk/aws-apigatewayv2';
 import { Stack } from '@aws-cdk/core';
+
 import { MessageAction } from '../types/MessageAction';
 
 const getModel = (
@@ -15,7 +16,6 @@ const getModel = (
     name: `${modelName}Model`,
     schema: {
       $schema: 'http://json-schema.org/draft-04/schema#',
-      // additionalProperties: {},
       properties,
       required,
       title: `${modelName}Schema`,

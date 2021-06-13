@@ -7,7 +7,7 @@
     "build": "npm run build:web",
     "build:web": "ts-node esbuild.ts build",
     "clean": "rimraf cdk.out coverage web/js",
-    "deploy": "npm run clean && cdk deploy --require-approval never",
+    "deploy": "npm run clean && cdk deploy --require-approval never --outputs-file config.json",
     "destroy": "cdk destroy --force",
     "diff": "cdk diff",
     "lint": "eslint . --ext=.js,.ts",

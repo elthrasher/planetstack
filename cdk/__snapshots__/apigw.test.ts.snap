@@ -24,7 +24,6 @@ Object {
         "Name": "AddModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "additionalProperties": Object {},
           "properties": Object {
             "action": Object {
               "enum": Array [
@@ -99,7 +98,6 @@ Object {
         "Name": "ChangeBackgroundModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "additionalProperties": Object {},
           "properties": Object {
             "action": Object {
               "enum": Array [
@@ -129,7 +127,6 @@ Object {
         "Name": "DeleteModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "additionalProperties": Object {},
           "properties": Object {
             "action": Object {
               "enum": Array [
@@ -183,7 +180,6 @@ Object {
         "Name": "GetStateModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "additionalProperties": Object {},
           "properties": Object {
             "action": Object {
               "enum": Array [
@@ -209,7 +205,6 @@ Object {
         "Name": "IconModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "additionalProperties": Object {},
           "properties": Object {
             "id": Object {
               "type": "string",
@@ -244,7 +239,6 @@ Object {
         "Name": "MoveModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "additionalProperties": Object {},
           "properties": Object {
             "action": Object {
               "enum": Array [

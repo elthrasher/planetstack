@@ -1,8 +1,8 @@
 import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
+
 import { getApiGateway } from './apigw';
 import { getTable } from './dynamodb';
 import { getFunctions } from './lambda';
-
 import { getWebsite } from './website';
 
 export class PlanetStack extends Stack {
