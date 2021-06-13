@@ -11,7 +11,7 @@ describe('moveIcon function', () => {
     awsSdkPromiseResponse.mockReturnValueOnce(Promise.resolve({ Attributes: { bg: 0, icon: { 'abc-123': icon } } }));
     awsSdkPromiseResponse.mockReturnValueOnce(Promise.resolve({ Items: [{ cid: '111' }, { cid: '222' }] }));
     const result = await handler({
-      body: JSON.stringify({ action: MessageAction.MOVE_ICON, id: 'abc-123', img: 0, x: 499, y: 499 }),
+      body: JSON.stringify({ action: MessageAction.MOVE_ICON, icon: { id: 'abc-123', img: 0, x: 499, y: 499 } }),
       requestContext: { connectionId: '123-abc' },
     } as APIGatewayProxyEvent);
     expect(result).toEqual({ body: 'OK', statusCode: 200 });

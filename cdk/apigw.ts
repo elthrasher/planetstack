@@ -1,58 +1,33 @@
 import { CfnAccount } from '@aws-cdk/aws-apigateway';
-import { CfnIntegration, CfnModel, CfnRoute, CfnStage, WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
+import { CfnModel, CfnRoute, CfnStage, WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaWebSocketIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
 import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
+import { Function as LambdaFunction } from '@aws-cdk/aws-lambda';
 import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs';
 import { RemovalPolicy, Stack } from '@aws-cdk/core';
 
 import { MessageAction } from '../types/MessageAction';
 import { lambdaFunctions } from './lambda';
+import { getModels } from './models';
 
 export const stageName = 'dev';
 
-export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi, WebSocketStage] => {
-  const webSocketApi = new WebSocketApi(scope, 'WebSocketApi', {
-    connectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onConnect }) },
-    disconnectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onDisconnect }) },
+const addRoute = (handler: LambdaFunction, action: MessageAction, model: CfnModel, webSocketApi: WebSocketApi) => {
+  const route = webSocketApi.addRoute(action, {
+    integration: new LambdaWebSocketIntegration({ handler }),
   });
+  const rt = route.node.defaultChild as CfnRoute;
 
-  webSocketApi.addRoute(MessageAction.ADD_ICON, {
-    integration: new LambdaWebSocketIntegration({ handler: fns.addIcon }),
-  });
+  rt.modelSelectionExpression = '$request.body.action';
+  rt.requestModels = { [action]: model.name };
+};
 
-  webSocketApi.addRoute(MessageAction.CHANGE_BACKGROUND, {
-    integration: new LambdaWebSocketIntegration({ handler: fns.changeBackground }),
-  });
-
-  webSocketApi.addRoute(MessageAction.DELETE_ICON, {
-    integration: new LambdaWebSocketIntegration({ handler: fns.deleteIcon }),
-  });
-
-  webSocketApi.addRoute(MessageAction.GET_STATE, {
-    integration: new LambdaWebSocketIntegration({ handler: fns.getState }),
-  });
-
-  const moveRoute = webSocketApi.addRoute(MessageAction.MOVE_ICON, {
-    integration: new LambdaWebSocketIntegration({ handler: fns.moveIcon }),
-  });
-
+const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketStage => {
   const stage = new WebSocketStage(scope, 'DevStage', {
     autoDeploy: true,
     stageName,
     webSocketApi,
   });
-
-  [fns.addIcon, fns.changeBackground, fns.deleteIcon, fns.getState, fns.moveIcon].forEach((fn) =>
-    fn.addToRolePolicy(
-      new PolicyStatement({
-        actions: ['execute-api:ManageConnections'],
-        resources: [
-          `arn:aws:execute-api:${process.env.CDK_DEFAULT_REGION}:${process.env.CDK_DEFAULT_ACCOUNT}:${webSocketApi.apiId}/*`,
-        ],
-      }),
-    ),
-  );
-
   const log = new LogGroup(scope, 'WebSocketAPILogs', {
     removalPolicy: RemovalPolicy.DESTROY,
     retention: RetentionDays.ONE_WEEK,
@@ -76,52 +51,37 @@ export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi
   new CfnAccount(scope, 'Account', {
     cloudWatchRoleArn: cwRole.roleArn,
   });
+  return stage;
+};
 
-  const moveModel = new CfnModel(scope, 'MoveModel', {
-    apiId: webSocketApi.apiId,
-    contentType: 'application/json',
-    name: 'MoveModel',
-    schema: {
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      properties: {
-        action: { type: 'string' },
-        id: { type: 'string' },
-        img: { type: 'number' },
-        x: { type: 'number' },
-        y: { type: 'number' },
-      },
-      required: ['action', 'id', 'img', 'x', 'y'],
-      title: 'MoveSchema',
-      type: 'object',
-    },
+export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi, WebSocketStage] => {
+  const webSocketApi = new WebSocketApi(scope, 'WebSocketApi', {
+    connectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onConnect }) },
+    disconnectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onDisconnect }) },
   });
 
-  const moveInt = new CfnIntegration(scope, 'MoveInt', {
-    apiId: webSocketApi.apiId,
-    integrationType: 'AWS_PROXY',
-    integrationUri: Stack.of(scope).formatArn({
-      account: 'lambda',
-      resource: 'path/2015-03-31/functions',
-      resourceName: `${fns.moveIcon.functionArn}/invocations`,
-      service: 'apigateway',
-    }),
-  });
+  const { addModel, changeBgModel, deleteModel, getStateModel, moveModel } = getModels(scope, webSocketApi);
 
-  const rt = moveRoute.node.defaultChild as CfnRoute;
+  addRoute(fns.addIcon, MessageAction.ADD_ICON, addModel, webSocketApi);
 
-  rt.modelSelectionExpression = '$request.body.action';
-  rt.requestModels = { [MessageAction.MOVE_ICON]: moveModel.name };
-  rt.target = `integrations/${moveInt.ref}`;
+  addRoute(fns.changeBackground, MessageAction.CHANGE_BACKGROUND, changeBgModel, webSocketApi);
 
-  fns.moveIcon.addPermission('MovePermission', {
-    principal: new ServicePrincipal('apigateway.amazonaws.com'),
-    scope,
-    sourceArn: Stack.of(scope).formatArn({
-      service: 'execute-api',
-      resource: webSocketApi.apiId,
-      resourceName: `*/*${MessageAction.MOVE_ICON}`,
-    }),
-  });
+  addRoute(fns.deleteIcon, MessageAction.DELETE_ICON, deleteModel, webSocketApi);
 
-  return [webSocketApi, stage];
+  addRoute(fns.moveIcon, MessageAction.MOVE_ICON, moveModel, webSocketApi);
+
+  addRoute(fns.getState, MessageAction.GET_STATE, getStateModel, webSocketApi);
+
+  [fns.addIcon, fns.changeBackground, fns.deleteIcon, fns.getState, fns.moveIcon].forEach((fn) =>
+    fn.addToRolePolicy(
+      new PolicyStatement({
+        actions: ['execute-api:ManageConnections'],
+        resources: [
+          `arn:aws:execute-api:${process.env.CDK_DEFAULT_REGION}:${process.env.CDK_DEFAULT_ACCOUNT}:${webSocketApi.apiId}/*`,
+        ],
+      }),
+    ),
+  );
+
+  return [webSocketApi, getStageAndLogs(scope, webSocketApi)];
 };

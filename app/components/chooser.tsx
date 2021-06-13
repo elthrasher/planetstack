@@ -2,24 +2,25 @@ import React, { useContext, useState } from 'react';
 
 import { backgrounds } from '../../types/data/backgrounds';
 import { icons } from '../../types/data/icons';
+import { AddIconModel, ChangeBackgroundModel } from '../../types/message';
 import { MessageAction } from '../../types/MessageAction';
 import { ChooserContext, ChooserMode } from '../providers/ChooserProvider';
 import { WSContext } from '../providers/WSProvider';
 
 export const Chooser = (): JSX.Element | null => {
   const { chooserMode, setChooserMode } = useContext(ChooserContext);
-  const { sendJsonMessage } = useContext(WSContext);
+  const { sendMessage } = useContext(WSContext);
 
   const [bgPreview, setBGPreview] = useState(0);
 
   const chooseIcon = (img: number) => () => {
     setChooserMode(ChooserMode.NONE);
-    sendJsonMessage({ action: MessageAction.ADD_ICON, icon: { img, x: 400, y: 400 } });
+    sendMessage<AddIconModel>({ action: MessageAction.ADD_ICON, icon: { img, x: 400, y: 400 } });
   };
 
   const chooseBG = () => {
     setChooserMode(ChooserMode.NONE);
-    sendJsonMessage({ action: MessageAction.CHANGE_BACKGROUND, bg: bgPreview });
+    sendMessage<ChangeBackgroundModel>({ action: MessageAction.CHANGE_BACKGROUND, bg: bgPreview });
   };
 
   const goBack = () => setBGPreview(Math.max(bgPreview - 1, 0));

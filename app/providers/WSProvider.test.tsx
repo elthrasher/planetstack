@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import React, { ReactNode, useContext } from 'react';
+import { MessageAction } from '../../types/MessageAction';
 
 import { WSContext, WSProvider } from './WSProvider';
 
@@ -17,8 +18,8 @@ describe('WSProvider', () => {
     const wrapper = ({ children }: { children: ReactNode }) => <WSProvider>{children}</WSProvider>;
     const { result } = renderHook(() => useContext(WSContext), { wrapper });
     act(() => {
-      result.current.sendJsonMessage({ message: 'blah' });
+      result.current.sendMessage({ action: MessageAction.GET_STATE });
     });
-    expect(sendJsonMessage).toHaveBeenCalledWith({ message: 'blah' });
+    expect(sendJsonMessage).toHaveBeenCalledWith({ action: 'getState' });
   });
 });

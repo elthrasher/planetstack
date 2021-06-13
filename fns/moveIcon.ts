@@ -10,9 +10,10 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   try {
     if (body) {
       const message: MoveIconModel = JSON.parse(body);
+      const { icon } = message;
       const updateIconResult = (await GameState.update(
         {
-          icons: { $set: { [message.id]: { img: message.img, x: message.x, y: message.y } } },
+          icons: { $set: { [icon.id]: { img: icon.img, x: icon.x, y: icon.y } } },
         },
         {},
         { ReturnValues: 'ALL_NEW' },

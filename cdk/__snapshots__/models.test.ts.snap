@@ -1,0 +1,225 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`models models 1`] = `
+Object {
+  "Resources": Object {
+    "AddModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "testApiD6ECAB50",
+        },
+        "ContentType": "application/json",
+        "Name": "AddModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "addIcon",
+              ],
+            },
+            "icon": Object {
+              "$ref": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://apigateway.amazonaws.com/restapis/",
+                    Object {
+                      "Ref": "testApiD6ECAB50",
+                    },
+                    "/models/",
+                    Object {
+                      "Ref": "IconModel",
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+          "required": Array [
+            "action",
+            "icon",
+          ],
+          "title": "AddSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "ChangeBackgroundModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "testApiD6ECAB50",
+        },
+        "ContentType": "application/json",
+        "Name": "ChangeBackgroundModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "changeBackground",
+              ],
+            },
+            "bg": Object {
+              "type": "number",
+            },
+          },
+          "required": Array [
+            "action",
+            "bg",
+          ],
+          "title": "ChangeBackgroundSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "DeleteModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "testApiD6ECAB50",
+        },
+        "ContentType": "application/json",
+        "Name": "DeleteModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "deleteIcon",
+              ],
+            },
+            "id": Object {
+              "type": "string",
+            },
+          },
+          "required": Array [
+            "action",
+            "id",
+          ],
+          "title": "DeleteSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "GetStateModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "testApiD6ECAB50",
+        },
+        "ContentType": "application/json",
+        "Name": "GetStateModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "getState",
+              ],
+            },
+          },
+          "required": Array [
+            "action",
+          ],
+          "title": "GetStateSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "IconModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "testApiD6ECAB50",
+        },
+        "ContentType": "application/json",
+        "Name": "IconModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "id": Object {
+              "type": "string",
+            },
+            "img": Object {
+              "type": "number",
+            },
+            "x": Object {
+              "type": "number",
+            },
+            "y": Object {
+              "type": "number",
+            },
+          },
+          "required": Array [
+            "img",
+            "x",
+            "y",
+          ],
+          "title": "IconSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "MoveModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "testApiD6ECAB50",
+        },
+        "ContentType": "application/json",
+        "Name": "MoveModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "moveIcon",
+              ],
+            },
+            "icon": Object {
+              "$ref": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://apigateway.amazonaws.com/restapis/",
+                    Object {
+                      "Ref": "testApiD6ECAB50",
+                    },
+                    "/models/",
+                    Object {
+                      "Ref": "IconModel",
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+          "required": Array [
+            "action",
+            "icon",
+          ],
+          "title": "MoveSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "testApiD6ECAB50": Object {
+      "Properties": Object {
+        "Name": "testApi",
+        "ProtocolType": "WEBSOCKET",
+        "RouteSelectionExpression": "$request.body.action",
+      },
+      "Type": "AWS::ApiGatewayV2::Api",
+    },
+  },
+}
+`;

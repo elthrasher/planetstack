@@ -1,8 +1,8 @@
 import React, { createContext, ReactNode, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { SendJsonMessage } from 'react-use-websocket/dist/lib/types';
 
 import { GameStateModel } from '../../types/gamestate';
+import { MessageModel } from '../../types/message';
 import { MessageAction } from '../../types/MessageAction';
 
 /* istanbul ignore next */
@@ -16,12 +16,12 @@ const defaultGs: GameStateModel = { bg: 0, icons: {} };
 
 export interface WSContextModel {
   gs: GameStateModel;
-  sendJsonMessage: SendJsonMessage;
+  sendMessage: <T extends MessageModel>(message: T) => void;
 }
 
 export const WSContext = createContext<WSContextModel>({
   gs: defaultGs,
-  sendJsonMessage: () => null,
+  sendMessage: () => null,
 });
 
 export const WSProvider = ({ children }: { children: ReactNode }): JSX.Element => {
@@ -34,5 +34,6 @@ export const WSProvider = ({ children }: { children: ReactNode }): JSX.Element =
     share: true,
     shouldReconnect: () => true,
   });
-  return <WSContext.Provider value={{ gs, sendJsonMessage }}>{children}</WSContext.Provider>;
+  const sendMessage = <T extends MessageModel>(message: T) => sendJsonMessage(message);
+  return <WSContext.Provider value={{ gs, sendMessage }}>{children}</WSContext.Provider>;
 };

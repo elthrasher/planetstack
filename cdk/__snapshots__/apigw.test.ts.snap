@@ -15,6 +15,50 @@ Object {
       },
       "Type": "AWS::ApiGateway::Account",
     },
+    "AddModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "ContentType": "application/json",
+        "Name": "AddModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "addIcon",
+              ],
+            },
+            "icon": Object {
+              "$ref": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://apigateway.amazonaws.com/restapis/",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/models/",
+                    Object {
+                      "Ref": "IconModel",
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+          "required": Array [
+            "action",
+            "icon",
+          ],
+          "title": "AddSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
     "CWRole7EC94C1E": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
@@ -46,6 +90,66 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "ChangeBackgroundModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "ContentType": "application/json",
+        "Name": "ChangeBackgroundModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "changeBackground",
+              ],
+            },
+            "bg": Object {
+              "type": "number",
+            },
+          },
+          "required": Array [
+            "action",
+            "bg",
+          ],
+          "title": "ChangeBackgroundSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "DeleteModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "ContentType": "application/json",
+        "Name": "DeleteModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "deleteIcon",
+              ],
+            },
+            "id": Object {
+              "type": "string",
+            },
+          },
+          "required": Array [
+            "action",
+            "id",
+          ],
+          "title": "DeleteSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
     "DevStage520A913F": Object {
       "Properties": Object {
         "AccessLogSettings": Object {
@@ -70,47 +174,43 @@ Object {
       },
       "Type": "AWS::ApiGatewayV2::Stage",
     },
-    "MoveInt": Object {
-      "Properties": Object {
-        "ApiId": Object {
-          "Ref": "WebSocketApi34BCF99B",
-        },
-        "IntegrationType": "AWS_PROXY",
-        "IntegrationUri": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
-              Object {
-                "Fn::GetAtt": Array [
-                  "moveIconFunctionB9241170",
-                  "Arn",
-                ],
-              },
-              "/invocations",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::ApiGatewayV2::Integration",
-    },
-    "MoveModel": Object {
+    "GetStateModel": Object {
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
         },
         "ContentType": "application/json",
-        "Name": "MoveModel",
+        "Name": "GetStateModel",
         "Schema": Object {
           "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
           "properties": Object {
             "action": Object {
-              "type": "string",
+              "enum": Array [
+                "getState",
+              ],
             },
+          },
+          "required": Array [
+            "action",
+          ],
+          "title": "GetStateSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "IconModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "ContentType": "application/json",
+        "Name": "IconModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
             "id": Object {
               "type": "string",
             },
@@ -125,46 +225,59 @@ Object {
             },
           },
           "required": Array [
-            "action",
-            "id",
             "img",
             "x",
             "y",
+          ],
+          "title": "IconSchema",
+          "type": "object",
+        },
+      },
+      "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "MoveModel": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "ContentType": "application/json",
+        "Name": "MoveModel",
+        "Schema": Object {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "additionalProperties": Object {},
+          "properties": Object {
+            "action": Object {
+              "enum": Array [
+                "moveIcon",
+              ],
+            },
+            "icon": Object {
+              "$ref": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "https://apigateway.amazonaws.com/restapis/",
+                    Object {
+                      "Ref": "WebSocketApi34BCF99B",
+                    },
+                    "/models/",
+                    Object {
+                      "Ref": "IconModel",
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+          "required": Array [
+            "action",
+            "icon",
           ],
           "title": "MoveSchema",
           "type": "object",
         },
       },
       "Type": "AWS::ApiGatewayV2::Model",
-    },
-    "MovePermission": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "moveIconFunctionB9241170",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:us-east-1:123456789:",
-              Object {
-                "Ref": "WebSocketApi34BCF99B",
-              },
-              "/*/*moveIcon",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
     },
     "WebSocketAPILogsCEF592AF": Object {
       "DeletionPolicy": "Delete",
@@ -215,6 +328,10 @@ Object {
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
+        },
+        "ModelSelectionExpression": "$request.body.action",
+        "RequestModels": Object {
+          "addIcon": "AddModel",
         },
         "RouteKey": "addIcon",
         "Target": Object {
@@ -292,6 +409,10 @@ Object {
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
+        },
+        "ModelSelectionExpression": "$request.body.action",
+        "RequestModels": Object {
+          "changeBackground": "ChangeBackgroundModel",
         },
         "RouteKey": "changeBackground",
         "Target": Object {
@@ -447,6 +568,10 @@ Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
         },
+        "ModelSelectionExpression": "$request.body.action",
+        "RequestModels": Object {
+          "deleteIcon": "DeleteModel",
+        },
         "RouteKey": "deleteIcon",
         "Target": Object {
           "Fn::Join": Array [
@@ -601,6 +726,10 @@ Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
         },
+        "ModelSelectionExpression": "$request.body.action",
+        "RequestModels": Object {
+          "getState": "GetStateModel",
+        },
         "RouteKey": "getState",
         "Target": Object {
           "Fn::Join": Array [
@@ -660,7 +789,7 @@ Object {
             Array [
               "integrations/",
               Object {
-                "Ref": "MoveInt",
+                "Ref": "WebSocketApimoveIconRouteWebSocketIntegrationcfeb5d44783412f84a2ff43b0cceab07864B5EC5",
               },
             ],
           ],

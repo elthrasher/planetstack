@@ -15,6 +15,17 @@ describe('rest api', () => {
     };
     Object.keys(resources).forEach((res) => {
       switch (resources[res].Type) {
+        case 'AWS::IAM::Policy':
+          if (res.startsWith('CustomCDKBucketDeployment')) {
+            matchObject.Resources[res] = {
+              Properties: {
+                PolicyDocument: {
+                  Statement: expect.any(Array),
+                },
+              },
+            };
+          }
+          break;
         case 'AWS::Lambda::Function':
           matchObject.Resources[res] = {
             Properties: { Code: expect.any(Object) },
