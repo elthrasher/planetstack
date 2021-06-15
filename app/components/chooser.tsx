@@ -9,9 +9,9 @@ import { WSContext } from '../providers/WSProvider';
 
 export const Chooser = (): JSX.Element | null => {
   const { chooserMode, setChooserMode } = useContext(ChooserContext);
-  const { sendMessage } = useContext(WSContext);
+  const { gs, sendMessage } = useContext(WSContext);
 
-  const [bgPreview, setBGPreview] = useState(0);
+  const [bgPreview, setBGPreview] = useState(gs.bg);
 
   const chooseIcon = (img: number) => () => {
     setChooserMode(ChooserMode.NONE);
