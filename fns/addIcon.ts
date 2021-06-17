@@ -6,6 +6,8 @@ import { GameState } from '../repositories/gamestate';
 import { notifyClients } from '../repositories/management';
 import { AddIconModel } from '../types/message';
 
+// Receive a payload as a new icon, generate a ksuid for it and save it to DynamoDB, then notifiy all connected clients.
+// ksuid is used here, but doesn't gain any real sorting benefits. This could be any kind of unique id.
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const { body } = event;
   try {

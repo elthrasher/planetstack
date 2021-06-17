@@ -12,6 +12,11 @@ import { getModels } from './models';
 
 export const stageName = 'dev';
 
+/*
+ * Utility function for adding a route with a model.
+ * This is not supported in the L2 constuct so we must drop to
+ * L1 (Cfn) by casting the `WebSocketRoute` to `CfnRoute` (`AWS::ApiGatewayV2::Route`)
+ */
 const addRoute = (handler: LambdaFunction, action: MessageAction, model: CfnModel, webSocketApi: WebSocketApi) => {
   const route = webSocketApi.addRoute(action, {
     integration: new LambdaWebSocketIntegration({ handler }),
@@ -22,12 +27,17 @@ const addRoute = (handler: LambdaFunction, action: MessageAction, model: CfnMode
   rt.requestModels = { [action]: model.name };
 };
 
+/*
+ * Again, we need to extend the `WebSocketStage` construct by casting it to `CfnStage` (`AWS::ApiGatewayV2::Stage`).
+ */
 const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketStage => {
+  // Unlike RestApi, you don't get a default `prod` stage automatically.
   const stage = new WebSocketStage(scope, 'DevStage', {
     autoDeploy: true,
     stageName,
     webSocketApi,
   });
+  // Manage the log group
   const log = new LogGroup(scope, 'WebSocketAPILogs', {
     removalPolicy: RemovalPolicy.DESTROY,
     retention: RetentionDays.ONE_WEEK,
@@ -43,6 +53,11 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
     loggingLevel: 'INFO',
   };
 
+  /*
+   * This role is automatically created by the RestApi construct but not by WebSocketApi.
+   * CfnAccount isn't even available in the `@aws-cdk/aws-apigatewayv2` lib so we must import `@aws-cdk/aws-apigateway`
+   * to create the CloudWatch role.
+   */
   const cwRole = new Role(scope, 'CWRole', {
     assumedBy: new ServicePrincipal('apigateway.amazonaws.com'),
     managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonAPIGatewayPushToCloudWatchLogs')],
@@ -72,6 +87,7 @@ export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi
 
   addRoute(fns.getState, MessageAction.GET_STATE, getStateModel, webSocketApi);
 
+  // These functions need to be able to manage websocket connections.
   [fns.addIcon, fns.changeBackground, fns.deleteIcon, fns.getState, fns.moveIcon].forEach((fn) =>
     fn.addToRolePolicy(
       new PolicyStatement({

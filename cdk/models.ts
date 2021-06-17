@@ -3,6 +3,7 @@ import { Stack } from '@aws-cdk/core';
 
 import { MessageAction } from '../types/MessageAction';
 
+// Create `CfnModel` from properties.
 const getModel = (
   scope: Stack,
   modelName: string,
@@ -24,6 +25,8 @@ const getModel = (
   });
 };
 
+// Create models for validation. It's possible to generate models from TypeScript interfaces or types.
+// See https://matt.martz.codes/how-to-automatically-generate-request-models-from-typescript-interfaces for some inspiration.
 export const getModels = (scope: Stack, webSocketApi: WebSocketApi): { [key: string]: CfnModel } => {
   const iconModel = getModel(
     scope,

@@ -16,7 +16,12 @@ export type lambdaFunctions = {
   [key in typeof functionNames[number]]: LambdaFunction;
 };
 
+// Same props for all functions. This is probably fine for demonstration purposes,
+// but we could find exceptions in a real-world scenario.
 const lambdaProps = {
+  bundling: {
+    externalModules: [],
+  },
   runtime: Runtime.NODEJS_14_X,
   timeout: Duration.minutes(1),
 };

@@ -5,6 +5,7 @@ import { GameState } from '../repositories/gamestate';
 import { notifyClients } from '../repositories/management';
 import { MoveIconModel } from '../types/message';
 
+// Receive a payload of an icon's new position, update the game state in DynamoDB and notify connected clients.
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const { body } = event;
   try {

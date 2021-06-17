@@ -5,6 +5,7 @@ import { GameState } from '../repositories/gamestate';
 import { notifyClients } from '../repositories/management';
 import { ChangeBackgroundModel } from '../types/message';
 
+// Receive a payload with a new background id, save it to DynamoDB, then update connected clients.
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const { body } = event;
   try {

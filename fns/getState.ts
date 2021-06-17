@@ -3,6 +3,8 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GameState } from '../repositories/gamestate';
 import { postToConnection } from '../repositories/management';
 
+// Request the current game state object.
+// This request is issued on UI page load.
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     const cid = event.requestContext.connectionId;

@@ -13,15 +13,18 @@ import { join } from 'path';
 import { stageName } from './apigw';
 
 export const getWebsite = (scope: Stack, socketApi: WebSocketApi): string => {
+  // NOT an S3 website as all access is via cloudfront.
   const websiteBucket = new Bucket(scope, 'WebsiteBucket', {
     autoDeleteObjects: true,
     blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
+  // Gives permission for cloudfront to serve files from the bucket.
   const originAccessIdentity = new OriginAccessIdentity(scope, 'OriginAccessIdentity');
   websiteBucket.grantRead(originAccessIdentity);
 
+  // The cloudfront distribution.
   const distribution = new Distribution(scope, 'Distribution', {
     defaultBehavior: {
       origin: new S3Origin(websiteBucket, { originAccessIdentity }),
@@ -33,6 +36,7 @@ export const getWebsite = (scope: Stack, socketApi: WebSocketApi): string => {
 
   const execOptions: ExecSyncOptions = { stdio: ['ignore', process.stderr, 'inherit'] };
 
+  // Code bundling with esbuild. This avoids any separate build step for the React app.
   const bundle = Source.asset(join(__dirname, '../app'), {
     bundling: {
       command: ['sh', '-c', 'echo "Docker build not supported. Please install esbuild."'],
@@ -56,6 +60,8 @@ export const getWebsite = (scope: Stack, socketApi: WebSocketApi): string => {
     },
   });
 
+  // Deploys web assets and performs cache invalidation.
+  // `prune: false` is needed here or the deployment will remove the `config.json` file.
   new BucketDeployment(scope, 'DeployWebsite', {
     destinationBucket: websiteBucket,
     distribution,
@@ -64,6 +70,8 @@ export const getWebsite = (scope: Stack, socketApi: WebSocketApi): string => {
     sources: [bundle],
   });
 
+  // Creates the `config.json` file necessary for the UI app to find the API.
+  // This resource only updates if its inputs change.
   new AwsCustomResource(scope, 'ConfigResource', {
     onUpdate: {
       action: 'putObject',

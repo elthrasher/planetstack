@@ -1,3 +1,4 @@
+// State management for tracking which chooser window is open.
 import React, { createContext, ReactNode, useState } from 'react';
 
 export enum ChooserMode {

@@ -4,6 +4,7 @@ import { notifyClients } from '../repositories/management';
 import { db, tableName } from '../repositories/table';
 import { DeleteIconModel } from '../types/message';
 
+// Receive a payload that one of the icons should be deleted, update DynamoDB and then notify connected clients.
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const { body } = event;
   try {
