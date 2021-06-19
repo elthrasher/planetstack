@@ -520,6 +520,8 @@ Object {
           "DataTraceEnabled": true,
           "DetailedMetricsEnabled": true,
           "LoggingLevel": "INFO",
+          "ThrottlingBurstLimit": 500,
+          "ThrottlingRateLimit": 1000,
         },
         "StageName": "dev",
       },

@@ -51,6 +51,8 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
     dataTraceEnabled: true,
     detailedMetricsEnabled: true,
     loggingLevel: 'INFO',
+    throttlingBurstLimit: 500,
+    throttlingRateLimit: 1000,
   };
 
   /*
