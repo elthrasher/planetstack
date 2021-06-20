@@ -6,6 +6,7 @@ import { GameState } from './gamestate';
 import { User } from './users';
 
 // Max item size for DynamoDB is 400kb.
+// Max message size for WebSocket API is 128kb, done in 32kb increments.
 // Here we're checking to see is the game state larger than 30k.
 // Since the game state is simple (icon id + position coordinates), a 30k game state would be quite large already.
 // Too many icons could cause render issues, so we just unceremoniously reset the game if we hit the limit.
