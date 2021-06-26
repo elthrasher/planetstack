@@ -42,12 +42,12 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
     removalPolicy: RemovalPolicy.DESTROY,
     retention: RetentionDays.ONE_WEEK,
   });
-  const cs = stage.node.defaultChild as CfnStage;
-  cs.accessLogSettings = {
+  const cfnStage = stage.node.defaultChild as CfnStage;
+  cfnStage.accessLogSettings = {
     destinationArn: log.logGroupArn,
     format: `$context.identity.sourceIp - - [$context.requestTime] "$context.httpMethod $context.routeKey $context.protocol" $context.status $context.responseLength $context.requestId`,
   };
-  cs.defaultRouteSettings = {
+  cfnStage.defaultRouteSettings = {
     dataTraceEnabled: true,
     detailedMetricsEnabled: true,
     loggingLevel: 'INFO',
