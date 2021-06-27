@@ -79,6 +79,14 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "AccessLogs8B620ECA": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "RetentionInDays": 7,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
     "Account": Object {
       "Properties": Object {
         "CloudWatchRoleArn": Object {
@@ -132,6 +140,35 @@ Object {
         },
       },
       "Type": "AWS::ApiGatewayV2::Model",
+    },
+    "Authorizer": Object {
+      "Properties": Object {
+        "ApiId": Object {
+          "Ref": "WebSocketApi34BCF99B",
+        },
+        "AuthorizerType": "REQUEST",
+        "AuthorizerUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "authorizerFunction307320B0",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+        "Name": "WebSocketApiAuthorizer",
+      },
+      "Type": "AWS::ApiGatewayV2::Authorizer",
     },
     "CWRole7EC94C1E": Object {
       "Properties": Object {
@@ -506,7 +543,7 @@ Object {
         "AccessLogSettings": Object {
           "DestinationArn": Object {
             "Fn::GetAtt": Array [
-              "WebSocketAPILogsCEF592AF",
+              "AccessLogs8B620ECA",
               "Arn",
             ],
           },
@@ -518,7 +555,6 @@ Object {
         "AutoDeploy": true,
         "DefaultRouteSettings": Object {
           "DataTraceEnabled": true,
-          "DetailedMetricsEnabled": true,
           "LoggingLevel": "INFO",
           "ThrottlingBurstLimit": 500,
           "ThrottlingRateLimit": 1000,
@@ -574,6 +610,26 @@ Object {
         },
       },
       "Type": "AWS::CloudFront::Distribution",
+    },
+    "ExecutionLogs6FEE23C8": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "/aws/apigateway/",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/dev",
+            ],
+          ],
+        },
+        "RetentionInDays": 7,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
     },
     "GetStateModel": Object {
       "Properties": Object {
@@ -718,14 +774,6 @@ Object {
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Delete",
     },
-    "WebSocketAPILogsCEF592AF": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "RetentionInDays": 7,
-      },
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Delete",
-    },
     "WebSocketApi34BCF99B": Object {
       "Properties": Object {
         "Name": "WebSocketApi",
@@ -735,13 +783,12 @@ Object {
       "Type": "AWS::ApiGatewayV2::Api",
     },
     "WebSocketApiaddIconRouteEBADD1DC": Object {
+      "DependsOn": Array [
+        "AddModel",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
-        },
-        "ModelSelectionExpression": "$request.body.action",
-        "RequestModels": Object {
-          "addIcon": "AddModel",
         },
         "RouteKey": "addIcon",
         "Target": Object {
@@ -816,13 +863,12 @@ Object {
       "Type": "AWS::ApiGatewayV2::Integration",
     },
     "WebSocketApichangeBackgroundRouteCB345709": Object {
+      "DependsOn": Array [
+        "ChangeBackgroundModel",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
-        },
-        "ModelSelectionExpression": "$request.body.action",
-        "RequestModels": Object {
-          "changeBackground": "ChangeBackgroundModel",
         },
         "RouteKey": "changeBackground",
         "Target": Object {
@@ -901,6 +947,10 @@ Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
         },
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": Object {
+          "Ref": "Authorizer",
+        },
         "RouteKey": "$connect",
         "Target": Object {
           "Fn::Join": Array [
@@ -974,13 +1024,12 @@ Object {
       "Type": "AWS::ApiGatewayV2::Integration",
     },
     "WebSocketApideleteIconRouteB72589AB": Object {
+      "DependsOn": Array [
+        "DeleteModel",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
-        },
-        "ModelSelectionExpression": "$request.body.action",
-        "RequestModels": Object {
-          "deleteIcon": "DeleteModel",
         },
         "RouteKey": "deleteIcon",
         "Target": Object {
@@ -1132,13 +1181,12 @@ Object {
       "Type": "AWS::ApiGatewayV2::Integration",
     },
     "WebSocketApigetStateRouteBFF18CEB": Object {
+      "DependsOn": Array [
+        "GetStateModel",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
-        },
-        "ModelSelectionExpression": "$request.body.action",
-        "RequestModels": Object {
-          "getState": "GetStateModel",
         },
         "RouteKey": "getState",
         "Target": Object {
@@ -1213,13 +1261,12 @@ Object {
       "Type": "AWS::ApiGatewayV2::Integration",
     },
     "WebSocketApimoveIconRoute523F71A8": Object {
+      "DependsOn": Array [
+        "MoveModel",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
-        },
-        "ModelSelectionExpression": "$request.body.action",
-        "RequestModels": Object {
-          "moveIcon": "MoveModel",
         },
         "RouteKey": "moveIcon",
         "Target": Object {
@@ -1527,6 +1574,92 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "authorizerFunction307320B0": Object {
+      "DependsOn": Array [
+        "authorizerFunctionServiceRoleE6AAF541",
+      ],
+      "Properties": Object {
+        "Code": Any<Object>,
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "authorizerFunctionServiceRoleE6AAF541",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "authorizerFunctionAuthZPermission5EA8CE1A": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "authorizerFunction307320B0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:123456789:",
+              Object {
+                "Ref": "WebSocketApi34BCF99B",
+              },
+              "/authorizers/",
+              Object {
+                "Ref": "Authorizer",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "authorizerFunctionServiceRoleE6AAF541": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
     },
     "changeBackgroundFunction2B84D2FD": Object {
       "DependsOn": Array [
@@ -1840,6 +1973,10 @@ Object {
                 "dynamodb:GetItem",
                 "dynamodb:Scan",
                 "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
               ],
               "Effect": "Allow",
               "Resource": Array [

@@ -4,6 +4,7 @@ import { Duration, Stack } from '@aws-cdk/core';
 
 const functionNames = [
   'addIcon',
+  'authorizer',
   'changeBackground',
   'deleteIcon',
   'getState',

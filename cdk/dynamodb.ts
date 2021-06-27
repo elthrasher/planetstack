@@ -15,7 +15,7 @@ export const getTable = (stack: Stack, fns: lambdaFunctions): Table => {
   table.grantReadWriteData(fns.addIcon);
   table.grantReadWriteData(fns.changeBackground);
   table.grantReadWriteData(fns.deleteIcon);
-  table.grantReadData(fns.getState);
+  table.grantReadWriteData(fns.getState);
   table.grantReadWriteData(fns.moveIcon);
   table.grantWriteData(fns.onConnect);
   table.grantWriteData(fns.onDisconnect);
