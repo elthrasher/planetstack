@@ -1,32 +1,15 @@
 import { CfnAccount } from '@aws-cdk/aws-apigateway';
-import {
-  CfnApi,
-  CfnAuthorizer,
-  CfnModel,
-  CfnRoute,
-  CfnStage,
-  WebSocketApi,
-  WebSocketStage,
-} from '@aws-cdk/aws-apigatewayv2';
+import { CfnModel, CfnRoute, CfnStage, WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaWebSocketIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
 import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Function as LambdaFunction } from '@aws-cdk/aws-lambda';
 import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs';
-import { Aspects, IAspect, IConstruct, RemovalPolicy, Stack } from '@aws-cdk/core';
+import { RemovalPolicy, Stack } from '@aws-cdk/core';
 
 import { MessageAction } from '../types/MessageAction';
+import { getCfnAuthorizer } from './authorizer';
 import { lambdaFunctions } from './lambda';
 import { getModels } from './models';
-
-class AuthZAspect implements IAspect {
-  constructor(private authorizer: CfnAuthorizer) {}
-  public visit(node: IConstruct) {
-    if (node instanceof CfnRoute && node.routeKey === '$connect') {
-      node.authorizerId = this.authorizer.ref;
-      node.authorizationType = 'CUSTOM';
-    }
-  }
-}
 
 export const stageName = 'dev';
 
@@ -107,30 +90,7 @@ export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi
 
   const { addModel, changeBgModel, deleteModel, getStateModel, moveModel } = getModels(scope, webSocketApi);
 
-  const authorizer = new CfnAuthorizer(scope, 'Authorizer', {
-    apiId: webSocketApi.apiId,
-    // authorizerCredentialsArn: `arn:aws:iam::${process.env.CDK_DEFAULT_ACCOUNT}:role/APIGatewayLambdaInvokeRole`,
-    authorizerType: 'REQUEST',
-    authorizerUri: Stack.of(scope).formatArn({
-      account: 'lambda',
-      resource: 'path',
-      resourceName: `2015-03-31/functions/${fns.authorizer.functionArn}/invocations`,
-      service: 'apigateway',
-    }),
-    // authorizerUri: `arn:aws:apigateway:${process.env.CDK_DEFAULT_REGION}:lambda:path/2015-03-31/functions/${fns.authorizer.functionArn}/invocations`,
-    name: 'WebSocketApiAuthorizer',
-  });
-
-  fns.authorizer.addPermission('AuthZPermission', {
-    principal: new ServicePrincipal('apigateway.amazonaws.com'),
-    sourceArn: Stack.of(webSocketApi).formatArn({
-      service: 'execute-api',
-      resource: (webSocketApi.node.defaultChild as CfnApi).ref,
-      resourceName: `authorizers/${authorizer.ref}`,
-    }),
-  });
-
-  Aspects.of(webSocketApi).add(new AuthZAspect(authorizer));
+  getCfnAuthorizer(scope, webSocketApi, fns.authorizer);
 
   addRoute(fns.addIcon, MessageAction.ADD_ICON, addModel, webSocketApi);
 
