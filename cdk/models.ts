@@ -1,3 +1,4 @@
+import { JsonSchema, JsonSchemaType } from '@aws-cdk/aws-apigateway';
 import { CfnModel, WebSocketApi } from '@aws-cdk/aws-apigatewayv2';
 import { Stack } from '@aws-cdk/core';
 
@@ -7,7 +8,9 @@ import { MessageAction } from '../types/MessageAction';
 const getModel = (
   scope: Stack,
   modelName: string,
-  properties: Record<string, { enum?: string[]; $ref?: string; type?: string }>,
+  properties: {
+    [name: string]: JsonSchema;
+  },
   required: string[],
   webSocketApi: WebSocketApi,
 ) => {
@@ -28,25 +31,27 @@ const getModel = (
 // Create models for validation. It's possible to generate models from TypeScript interfaces or types.
 // See https://matt.martz.codes/how-to-automatically-generate-request-models-from-typescript-interfaces for some inspiration.
 export const getModels = (scope: Stack, webSocketApi: WebSocketApi): { [key: string]: CfnModel } => {
-  const iconModel = getModel(
-    scope,
-    'Icon',
-    {
-      id: { type: 'string' },
-      img: { type: 'number' },
-      x: { type: 'number' },
-      y: { type: 'number' },
+  // Was unable to get $ref to work which is the preferred JsonSchema way to do this.
+  // Saved here by imperative code that will duplicate this nested model in our Cfn.
+  // Should work and does in RestAPI, but haven't gotten this to work in V2 spec
+  // https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.html
+  const iconModel = {
+    properties: {
+      id: { type: JsonSchemaType.STRING },
+      img: { type: JsonSchemaType.NUMBER },
+      x: { type: JsonSchemaType.NUMBER },
+      y: { type: JsonSchemaType.NUMBER },
     },
-    ['img', 'x', 'y'],
-    webSocketApi,
-  );
+    required: ['img', 'x', 'y'],
+    type: JsonSchemaType.OBJECT,
+  };
 
   const addModel = getModel(
     scope,
     'Add',
     {
       action: { enum: [MessageAction.ADD_ICON] },
-      icon: { $ref: `https://apigateway.amazonaws.com/restapis/${webSocketApi.apiId}/models/${iconModel.ref}` },
+      icon: iconModel,
     },
     ['action', 'icon'],
     webSocketApi,
@@ -55,7 +60,7 @@ export const getModels = (scope: Stack, webSocketApi: WebSocketApi): { [key: str
   const changeBgModel = getModel(
     scope,
     'ChangeBackground',
-    { action: { enum: [MessageAction.CHANGE_BACKGROUND] }, bg: { type: 'number' } },
+    { action: { enum: [MessageAction.CHANGE_BACKGROUND] }, bg: { type: JsonSchemaType.NUMBER } },
     ['action', 'bg'],
     webSocketApi,
   );
@@ -63,7 +68,7 @@ export const getModels = (scope: Stack, webSocketApi: WebSocketApi): { [key: str
   const deleteModel = getModel(
     scope,
     'Delete',
-    { action: { enum: [MessageAction.DELETE_ICON] }, id: { type: 'string' } },
+    { action: { enum: [MessageAction.DELETE_ICON] }, id: { type: JsonSchemaType.STRING } },
     ['action', 'id'],
     webSocketApi,
   );
@@ -81,7 +86,7 @@ export const getModels = (scope: Stack, webSocketApi: WebSocketApi): { [key: str
     'Move',
     {
       action: { enum: [MessageAction.MOVE_ICON] },
-      icon: { $ref: `https://apigateway.amazonaws.com/restapis/${webSocketApi.apiId}/models/${iconModel.ref}` },
+      icon: iconModel,
     },
     ['action', 'icon'],
     webSocketApi,

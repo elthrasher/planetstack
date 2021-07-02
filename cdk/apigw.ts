@@ -24,12 +24,8 @@ const addRoute = (handler: LambdaFunction, action: MessageAction, model: CfnMode
   });
   const rt = route.node.defaultChild as CfnRoute;
 
-  // Unfortunately it seems that if we add the models during resource creation, it causes a horrible API Gateway
-  // bug where none of the endpoints work at all.
-  // To enable model validation, deploy the stack, uncomment the following lines, then deploy again :P
-
-  // rt.modelSelectionExpression = '$request.body.action';
-  // rt.requestModels = { [action]: model.name };
+  rt.modelSelectionExpression = '$request.body.action';
+  rt.requestModels = { [action]: model.name };
 
   rt.addDependsOn(model);
 };
