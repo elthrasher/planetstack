@@ -76,7 +76,7 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
     cloudWatchRoleArn: cwRole.roleArn,
   });
 
-  account.node.addDependency(webSocketApi);
+  webSocketApi.node.addDependency(account);
   return stage;
 };
 
