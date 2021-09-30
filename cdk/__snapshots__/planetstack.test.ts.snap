@@ -751,6 +751,9 @@ Object {
       "UpdateReplacePolicy": "Delete",
     },
     "WebSocketApi34BCF99B": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Name": "WebSocketApi",
         "ProtocolType": "WEBSOCKET",
@@ -760,6 +763,7 @@ Object {
     },
     "WebSocketApiaddIconRouteEBADD1DC": Object {
       "DependsOn": Array [
+        "Account",
         "AddModel",
       ],
       "Properties": Object {
@@ -786,6 +790,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApiaddIconRoutePlanetStackWebSocketApiaddIconRoute07E19F10PermissionD6A0BA50": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -815,6 +822,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApiaddIconRouteWebSocketIntegration180bd9da36ce12bea60613f440a9786a83658B96": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -844,6 +854,7 @@ Object {
     },
     "WebSocketApichangeBackgroundRouteCB345709": Object {
       "DependsOn": Array [
+        "Account",
         "ChangeBackgroundModel",
       ],
       "Properties": Object {
@@ -870,6 +881,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApichangeBackgroundRoutePlanetStackWebSocketApichangeBackgroundRouteF75CEC79Permission1782553F": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -899,6 +913,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApichangeBackgroundRouteWebSocketIntegration79b850399517228fd2da491d182b834469208C0C": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -927,6 +944,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Integration",
     },
     "WebSocketApiconnectRoute846149DD": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -951,6 +971,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApiconnectRoutePlanetStackWebSocketApiconnectRouteC31C95B3Permission4A5EC82C": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -980,6 +1003,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApiconnectRouteWebSocketIntegration3705f7641fc6204714f30f040bc39e43946B3081": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -1009,6 +1035,7 @@ Object {
     },
     "WebSocketApideleteIconRouteB72589AB": Object {
       "DependsOn": Array [
+        "Account",
         "DeleteModel",
       ],
       "Properties": Object {
@@ -1035,6 +1062,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApideleteIconRoutePlanetStackWebSocketApideleteIconRoute311940AFPermissionEAF6CEDC": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -1064,6 +1094,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApideleteIconRouteWebSocketIntegrationd8dad83264b6017b882f3a5e95d217179578DE41": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -1092,6 +1125,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Integration",
     },
     "WebSocketApidisconnectRouteC181A19C": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -1112,6 +1148,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApidisconnectRoutePlanetStackWebSocketApidisconnectRouteC39B0C9CPermission56401DDF": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -1141,6 +1180,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApidisconnectRouteWebSocketIntegration77927d2ca1f8e59d5bc155807533cc7c937FC6EC": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -1170,6 +1212,7 @@ Object {
     },
     "WebSocketApigetStateRouteBFF18CEB": Object {
       "DependsOn": Array [
+        "Account",
         "GetStateModel",
       ],
       "Properties": Object {
@@ -1196,6 +1239,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApigetStateRoutePlanetStackWebSocketApigetStateRoute795EE18DPermissionF1592A66": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -1225,6 +1271,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApigetStateRouteWebSocketIntegration26c35b765d3b655ecf9beb6b2c5dad4c6540EBBD": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",
@@ -1254,6 +1303,7 @@ Object {
     },
     "WebSocketApimoveIconRoute523F71A8": Object {
       "DependsOn": Array [
+        "Account",
         "MoveModel",
       ],
       "Properties": Object {
@@ -1280,6 +1330,9 @@ Object {
       "Type": "AWS::ApiGatewayV2::Route",
     },
     "WebSocketApimoveIconRoutePlanetStackWebSocketApimoveIconRoute789DE971PermissionF52BCA0D": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "Action": "lambda:InvokeFunction",
         "FunctionName": Object {
@@ -1309,6 +1362,9 @@ Object {
       "Type": "AWS::Lambda::Permission",
     },
     "WebSocketApimoveIconRouteWebSocketIntegrationcfeb5d44783412f84a2ff43b0cceab07864B5EC5": Object {
+      "DependsOn": Array [
+        "Account",
+      ],
       "Properties": Object {
         "ApiId": Object {
           "Ref": "WebSocketApi34BCF99B",

@@ -72,9 +72,11 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
     managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonAPIGatewayPushToCloudWatchLogs')],
   });
 
-  new CfnAccount(scope, 'Account', {
+  const account = new CfnAccount(scope, 'Account', {
     cloudWatchRoleArn: cwRole.roleArn,
   });
+
+  webSocketApi.node.addDependency(account);
   return stage;
 };
 
