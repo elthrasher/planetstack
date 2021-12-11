@@ -1,4 +1,5 @@
 *.css
+*.css.map
 *.js
 *.js.map
 .eslintcache

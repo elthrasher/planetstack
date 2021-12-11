@@ -43,7 +43,7 @@ describe('changeBackground function', () => {
         requestContext: { connectionId: '123-abc' },
       } as APIGatewayProxyEvent);
     } catch (e) {
-      expect(e.message).toBe('Missing event body!');
+      expect(e).toMatchObject({ message: 'Missing event body!' });
     }
   });
   test('catch errors', async () => {
@@ -55,7 +55,7 @@ describe('changeBackground function', () => {
         requestContext: { connectionId: '123-abc' },
       } as APIGatewayProxyEvent);
     } catch (e) {
-      expect(e.message).toBe('An error has occurred!');
+      expect(e).toMatchObject({ message: 'An error has occurred!' });
     }
   });
 });

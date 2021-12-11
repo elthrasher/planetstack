@@ -1,4 +1,5 @@
-import { App } from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
+
 import { PlanetStack } from './planetstack';
 
 const app = new App();

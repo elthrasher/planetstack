@@ -1,5 +1,5 @@
-import { SynthUtils } from '@aws-cdk/assert';
-import { App } from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
 
 import { PlanetStack } from './planetstack';
 
@@ -7,7 +7,7 @@ describe('rest api', () => {
   test('rest api', () => {
     const app = new App();
     const stack = new PlanetStack(app, 'PlanetStack', { env: { account: '123456789', region: 'us-east-1' } });
-    const cfn = SynthUtils.toCloudFormation(stack);
+    const cfn = Template.fromStack(stack).toJSON();
     const resources = cfn.Resources;
     const matchObject: { Parameters: Record<string, unknown>; Resources: Record<string, unknown> } = {
       Parameters: expect.any(Object),

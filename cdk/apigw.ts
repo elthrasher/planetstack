@@ -1,10 +1,11 @@
-import { CfnAccount } from '@aws-cdk/aws-apigateway';
-import { CfnModel, CfnRoute, CfnStage, WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
-import { LambdaWebSocketIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
-import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Function as LambdaFunction } from '@aws-cdk/aws-lambda';
-import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs';
-import { RemovalPolicy, Stack } from '@aws-cdk/core';
+import { WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { WebSocketLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
+import { RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnAccount } from 'aws-cdk-lib/aws-apigateway';
+import { CfnModel, CfnRoute, CfnStage } from 'aws-cdk-lib/aws-apigatewayv2';
+import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 import { MessageAction } from '../types/MessageAction';
 import { getCfnAuthorizer } from './authorizer';
@@ -20,7 +21,7 @@ export const stageName = 'dev';
  */
 const addRoute = (handler: LambdaFunction, action: MessageAction, model: CfnModel, webSocketApi: WebSocketApi) => {
   const route = webSocketApi.addRoute(action, {
-    integration: new LambdaWebSocketIntegration({ handler }),
+    integration: new WebSocketLambdaIntegration(`${action}Integration`, handler),
   });
   const rt = route.node.defaultChild as CfnRoute;
 
@@ -64,7 +65,7 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
 
   /*
    * This role is automatically created by the RestApi construct but not by WebSocketApi.
-   * CfnAccount isn't even available in the `@aws-cdk/aws-apigatewayv2` lib so we must import `@aws-cdk/aws-apigateway`
+   * CfnAccount isn't even available in the `aws-cdk-lib/aws-apigatewayv2` lib so we must import `aws-cdk-lib/aws-apigateway`
    * to create the CloudWatch role.
    */
   const cwRole = new Role(scope, 'CWRole', {
@@ -82,8 +83,10 @@ const getStageAndLogs = (scope: Stack, webSocketApi: WebSocketApi): WebSocketSta
 
 export const getApiGateway = (scope: Stack, fns: lambdaFunctions): [WebSocketApi, WebSocketStage] => {
   const webSocketApi = new WebSocketApi(scope, 'WebSocketApi', {
-    connectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onConnect }) },
-    disconnectRouteOptions: { integration: new LambdaWebSocketIntegration({ handler: fns.onDisconnect }) },
+    connectRouteOptions: { integration: new WebSocketLambdaIntegration('OnConnectIntegration', fns.onConnect) },
+    disconnectRouteOptions: {
+      integration: new WebSocketLambdaIntegration('OnDisconnectIntegration', fns.onDisconnect),
+    },
   });
 
   const { addModel, changeBgModel, deleteModel, getStateModel, moveModel } = getModels(scope, webSocketApi);

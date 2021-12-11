@@ -44,7 +44,7 @@ describe('getState function', () => {
         requestContext: { connectionId: '123-abc' },
       } as APIGatewayProxyEvent);
     } catch (e) {
-      expect(e.message).toBe('An error has occurred!');
+      expect(e).toMatchObject({ message: 'An error has occurred!' });
     }
   });
 });

@@ -1,4 +1,5 @@
-import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
+import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
 import { getApiGateway } from './apigw';
 import { getTable } from './dynamodb';

@@ -73,7 +73,7 @@ describe('API Gateway Management', () => {
         JSON.stringify({}),
       );
     } catch (e) {
-      expect(e.message).toBe('blah');
+      expect(e).toMatchObject({ message: 'blah' });
     }
   });
 });

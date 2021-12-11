@@ -1,5 +1,5 @@
-import { AttributeType, BillingMode, Table } from '@aws-cdk/aws-dynamodb';
-import { RemovalPolicy, Stack } from '@aws-cdk/core';
+import { RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 
 import { lambdaFunctions } from './lambda';
 

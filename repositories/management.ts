@@ -5,6 +5,8 @@ import { UserModel } from '../types/user';
 import { GameState } from './gamestate';
 import { User } from './users';
 
+import type { AWSError } from 'aws-sdk/lib/core';
+
 // Max item size for DynamoDB is 400kb.
 // Max message size for WebSocket API is 128kb, done in 32kb increments.
 // Here we're checking to see is the game state larger than 30k.
@@ -41,7 +43,7 @@ export const notifyClients = async (event: APIGatewayProxyEvent, message: string
     try {
       await apigwManagementApi.postToConnection({ ConnectionId: cid, Data: message }).promise();
     } catch (e) {
-      if (e.statusCode === 410) {
+      if ((e as AWSError).statusCode === 410) {
         console.log(`Found stale connection, deleting ${cid}`);
         await User.delete({ cid });
       } else {

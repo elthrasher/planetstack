@@ -1,7 +1,9 @@
-import { CfnApi, CfnAuthorizer, CfnRoute, WebSocketApi } from '@aws-cdk/aws-apigatewayv2';
-import { ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Function as LambdaFunction } from '@aws-cdk/aws-lambda';
-import { Aspects, IAspect, IConstruct, Stack } from '@aws-cdk/core';
+import { WebSocketApi } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { Aspects, IAspect, Stack } from 'aws-cdk-lib';
+import { CfnApi, CfnAuthorizer, CfnRoute } from 'aws-cdk-lib/aws-apigatewayv2';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { IConstruct } from 'constructs';
 
 // WebSocketRoute doesn't allow us to attach an authorizer.
 // This Aspect casts the WebSocketRoute with the routeKey of "$connect"

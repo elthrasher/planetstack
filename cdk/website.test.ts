@@ -1,5 +1,6 @@
-import { SynthUtils } from '@aws-cdk/assert';
-import { App, Stack } from '@aws-cdk/core';
+import { App, Stack } from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+
 import { getApiGateway } from './apigw';
 import { getFunctions } from './lambda';
 import { getWebsite } from './website';
@@ -9,7 +10,7 @@ describe('web components', () => {
     const app = new App();
     const stack = new Stack(app, 'ApiTestStack', { env: { account: '123456789', region: 'us-east-1' } });
     getWebsite(stack, getApiGateway(stack, getFunctions(stack))[0]);
-    const cfn = SynthUtils.toCloudFormation(stack);
+    const cfn = Template.fromStack(stack).toJSON();
     const resources = cfn.Resources;
     const matchObject: { Parameters: Record<string, unknown>; Resources: Record<string, unknown> } = {
       Parameters: expect.any(Object),

@@ -1,6 +1,7 @@
-import { JsonSchema, JsonSchemaType } from '@aws-cdk/aws-apigateway';
-import { CfnModel, WebSocketApi } from '@aws-cdk/aws-apigatewayv2';
-import { Stack } from '@aws-cdk/core';
+import { WebSocketApi } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { Stack } from 'aws-cdk-lib';
+import { JsonSchema, JsonSchemaType } from 'aws-cdk-lib/aws-apigateway';
+import { CfnModel } from 'aws-cdk-lib/aws-apigatewayv2';
 
 import { MessageAction } from '../types/MessageAction';
 
